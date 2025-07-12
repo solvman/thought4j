@@ -38,11 +38,10 @@ import java.util.Set;
  * @author Mikhail Yevchenko m.ṥῥẚɱ.ѓѐḿởύḙ@azazar.com Small modifications by
  *         Alessandro Polverini polverini at gmail.com
  */
-public interface ThoughtClientInterface
-{
+public interface ThoughtClientInterface {
 
   /*
-   * Missing methods:  getgenerate
+   * Missing methods: getgenerate
    * gethashespersec getwork ( "data" ) help ( "command" ) listaddressgroupings
    * listlockunspent (DEPRECATED) listreceivedbyaccount ( minconf includeempty )
    * lockunspent unlock [{"txid":"txid","vout":n},...] sendmany "fromaccount"
@@ -54,29 +53,30 @@ public interface ThoughtClientInterface
    * The lockunspent RPC locks
    *
    * @param lock
-   *          (boolean, required) Whether to unlock (true) or lock (false) the specified transactions
+   *               (boolean, required) Whether to unlock (true) or lock (false)
+   *               the specified transactions
    *
    * @param inputs
-   *          (string, optional) A json array of objects. Each object the txid (string) vout (numeric)
+   *               (string, optional) A json array of objects. Each object the
+   *               txid (string) vout (numeric)
    *
-   * @return true|false    (boolean) Whether the command was successful or not
+   * @return true|false (boolean) Whether the command was successful or not
    */
   public boolean lockunspent(boolean lock, List<BasicTxInput> inputs) throws GenericRpcException;
-  
+
   /**
-   * The getaddresstxids RPC returns a list of every transaction id for a list of addresses.
+   * The getaddresstxids RPC returns a list of every transaction id for a list of
+   * addresses.
    * 
    * @param addresses
-   *          The list of addresses to get transaction ids for.
+   *                  The list of addresses to get transaction ids for.
    * 
    */
   public List<String> getAddressTxids(Set<String> addresses) throws GenericRpcException;
-  
+
   public List<String> getAddressTxids(Set<String> addresses, int start, int end) throws GenericRpcException;
-  
-  
-  public static interface TxInput extends Serializable
-  {
+
+  public static interface TxInput extends Serializable {
 
     public String txid();
 
@@ -85,113 +85,96 @@ public interface ThoughtClientInterface
     public String scriptPubKey();
   }
 
-  public static class BasicTxInput implements TxInput
-  {
+  public static class BasicTxInput implements TxInput {
     private static final long serialVersionUID = 1L;
-    public String             txid;
-    public int                vout;
-    public String             scriptPubKey;
+    public String txid;
+    public int vout;
+    public String scriptPubKey;
 
-    public BasicTxInput(String txid, int vout)
-    {
+    public BasicTxInput(String txid, int vout) {
       this.txid = txid;
       this.vout = vout;
     }
 
-    public BasicTxInput(String txid, int vout, String scriptPubKey)
-    {
+    public BasicTxInput(String txid, int vout, String scriptPubKey) {
       this(txid, vout);
       this.scriptPubKey = scriptPubKey;
     }
 
     @Override
-    public String txid()
-    {
+    public String txid() {
       return txid;
     }
 
     @Override
-    public int vout()
-    {
+    public int vout() {
       return vout;
     }
 
     @Override
-    public String scriptPubKey()
-    {
+    public String scriptPubKey() {
       return scriptPubKey;
     }
 
   }
 
-  public static class ExtendedTxInput extends BasicTxInput
-  {
+  public static class ExtendedTxInput extends BasicTxInput {
     private static final long serialVersionUID = 1L;
-    public String             redeemScript;
-    public BigDecimal         amount;
+    public String redeemScript;
+    public BigDecimal amount;
 
-    public ExtendedTxInput(String txid, int vout)
-    {
+    public ExtendedTxInput(String txid, int vout) {
       super(txid, vout);
     }
 
-    public ExtendedTxInput(String txid, int vout, String scriptPubKey)
-    {
+    public ExtendedTxInput(String txid, int vout, String scriptPubKey) {
       super(txid, vout, scriptPubKey);
     }
 
-    public ExtendedTxInput(String txid, int vout, String scriptPubKey, String redeemScript, BigDecimal amount)
-    {
+    public ExtendedTxInput(String txid, int vout, String scriptPubKey, String redeemScript, BigDecimal amount) {
       super(txid, vout, scriptPubKey);
       this.redeemScript = redeemScript;
       this.amount = amount;
     }
 
-    public String redeemScript()
-    {
+    public String redeemScript() {
       return redeemScript;
     }
 
-    public BigDecimal amount()
-    {
+    public BigDecimal amount() {
       return amount;
     }
 
   }
 
-  public static interface TxOutput extends Serializable
-  {
+  public static interface TxOutput extends Serializable {
 
     public String address();
 
     public double amount();
   }
 
-  public static class BasicTxOutput implements TxOutput
-  {
+  public static class BasicTxOutput implements TxOutput {
 
     /**
      * 
      */
     private static final long serialVersionUID = 1L;
-    public String             address;
-    public double             amount;
+    public String address;
+    public double amount;
 
-    public BasicTxOutput(String address, double amount)
-    {
+    public BasicTxOutput(String address, double amount) {
       this.address = address;
       this.amount = amount;
     }
 
     @Override
-    public String address()
-    {
+    public String address() {
       return address;
     }
 
     @Override
-    public double amount()
-    {
+    public double amount() {
       return amount;
     }
   }
@@ -202,10 +185,10 @@ public interface ThoughtClientInterface
    * transaction is not stored in the wallet or transmitted to the network.
    * 
    * @param inputs
-   *          An array of objects, each one to be used as an input to the
-   *          transaction
+   *                An array of objects, each one to be used as an input to the
+   *                transaction
    * @param outputs
-   *          The addresses and amounts to pay
+   *                The addresses and amounts to pay
    * @return The resulting unsigned raw transaction in serialized transaction
    *         format encoded as hex.
    * 
@@ -214,8 +197,7 @@ public interface ThoughtClientInterface
    */
   public String createRawTransaction(List<TxInput> inputs, List<TxOutput> outputs) throws GenericRpcException;
 
-  class FundRawTransactionOptions
-  {
+  class FundRawTransactionOptions {
     protected String changeAddress;
     protected Integer changePosition;
     protected Boolean includeWatching;
@@ -223,85 +205,91 @@ public interface ThoughtClientInterface
     protected Boolean reserveChangeKey;
     protected Double feeRate;
     protected List<Integer> subtractFeeFromOutputs;
-    public String getChangeAddress()
-    {
+
+    public String getChangeAddress() {
       return changeAddress;
     }
-    public void setChangeAddress(String changeAddress)
-    {
+
+    public void setChangeAddress(String changeAddress) {
       this.changeAddress = changeAddress;
     }
-    public Integer getChangePosition()
-    {
+
+    public Integer getChangePosition() {
       return changePosition;
     }
-    public void setChangePosition(Integer changePosition)
-    {
+
+    public void setChangePosition(Integer changePosition) {
       this.changePosition = changePosition;
     }
-    public Boolean getIncludeWatching()
-    {
+
+    public Boolean getIncludeWatching() {
       return includeWatching;
     }
-    public void setIncludeWatching(Boolean includeWatching)
-    {
+
+    public void setIncludeWatching(Boolean includeWatching) {
       this.includeWatching = includeWatching;
     }
-    public Boolean getLockUnspents()
-    {
+
+    public Boolean getLockUnspents() {
       return lockUnspents;
     }
-    public void setLockUnspents(Boolean lockUnspents)
-    {
+
+    public void setLockUnspents(Boolean lockUnspents) {
       this.lockUnspents = lockUnspents;
     }
-    public Boolean getReserveChangeKey()
-    {
+
+    public Boolean getReserveChangeKey() {
       return reserveChangeKey;
     }
-    public void setReserveChangeKey(Boolean reserveChangeKey)
-    {
+
+    public void setReserveChangeKey(Boolean reserveChangeKey) {
       this.reserveChangeKey = reserveChangeKey;
     }
-    public Double getFeeRate()
-    {
+
+    public Double getFeeRate() {
       return feeRate;
     }
-    public void setFeeRate(Double feeRate)
-    {
+
+    public void setFeeRate(Double feeRate) {
       this.feeRate = feeRate;
     }
-    public List<Integer> getSubtractFeeFromOutputs()
-    {
+
+    public List<Integer> getSubtractFeeFromOutputs() {
       return subtractFeeFromOutputs;
     }
-    public void setSubtractFeeFromOutputs(List<Integer> subtractFeeFromOutputs)
-    {
+
+    public void setSubtractFeeFromOutputs(List<Integer> subtractFeeFromOutputs) {
       this.subtractFeeFromOutputs = subtractFeeFromOutputs;
     }
   }
-  
-  interface FundedRawTransaction extends Serializable
-  {
+
+  interface FundedRawTransaction extends Serializable {
     String hex();
-    
+
     double fee();
-    
+
     int changepos();
   }
-  
-  
+
   /**
-   * Add inputs to a transaction until it has enough in value to meet its out value.
-   * This will not modify existing inputs, and will add at most one change output to the outputs.
-   * No existing outputs will be modified unless "subtractFeeFromOutputs" is specified.
-   * Note that inputs which were signed may need to be resigned after completion since in/outputs have been added.
+   * Add inputs to a transaction until it has enough in value to meet its out
+   * value.
+   * This will not modify existing inputs, and will add at most one change output
+   * to the outputs.
+   * No existing outputs will be modified unless "subtractFeeFromOutputs" is
+   * specified.
+   * Note that inputs which were signed may need to be resigned after completion
+   * since in/outputs have been added.
    * The inputs added will not be signed, use signrawtransaction for that.
-   * Note that all existing inputs must have their previous output transaction be in the wallet.
-   * Note that all inputs selected must be of standard form and P2SH scripts must be
+   * Note that all existing inputs must have their previous output transaction be
+   * in the wallet.
+   * Note that all inputs selected must be of standard form and P2SH scripts must
+   * be
    * in the wallet using importaddress or addmultisigaddress (to calculate fees).
-   * You can see whether this is the case by checking the "solvable" field in the listunspent output.
-   * Only pay-to-pubkey, multisig, and P2SH versions thereof are currently supported for watch-only
+   * You can see whether this is the case by checking the "solvable" field in the
+   * listunspent output.
+   * Only pay-to-pubkey, multisig, and P2SH versions thereof are currently
+   * supported for watch-only
    * 
    * @param hexstring The string returned from createRawTransaction()
    * @param options
@@ -309,15 +297,16 @@ public interface ThoughtClientInterface
    * @return The hex string of the funded transaction, ready for signing.
    * @throws GenericRpcException
    */
-  public FundedRawTransaction fundRawTransaction(String hexstring, FundRawTransactionOptions options) throws GenericRpcException;
-  
+  public FundedRawTransaction fundRawTransaction(String hexstring, FundRawTransactionOptions options)
+      throws GenericRpcException;
+
   /**
    * The dumpprivkey RPC returns the wallet-import-format (WIF) private key
    * corresponding to an address. (But does not remove it from the wallet.)
    * 
    * @param address
-   *          The P2PKH address corresponding to the private key you want
-   *          returned.
+   *                The P2PKH address corresponding to the private key you want
+   *                returned.
    * 
    * @see <a href=
    *      "https://bitcoin.org/en/developer-reference#dumpprivkey">dumpprivkey</a>
@@ -329,8 +318,8 @@ public interface ThoughtClientInterface
    * address.
    * 
    * @param address
-   *          A P2PKH or P2SH Thought address belonging either to a specific
-   *          account or the default account
+   *                A P2PKH or P2SH Thought address belonging either to a specific
+   *                account or the default account
    * @return The name of an account, or an empty string
    * 
    * @see <a href=
@@ -346,7 +335,7 @@ public interface ThoughtClientInterface
    * return a different address.
    * 
    * @param account
-   *          The name of an account.
+   *                The name of an account.
    * @return An address, belonging to the account specified, which has not yet
    *         received any payments
    * 
@@ -360,7 +349,7 @@ public interface ThoughtClientInterface
    * particular account.
    * 
    * @param account
-   *          The name of an account to get the balance for.
+   *                The name of an account to get the balance for.
    * 
    * @see <a href=
    *      "https://bitcoin.org/en/developer-reference#getaddressesbyaccount">getaddressesbyaccount</a>
@@ -377,20 +366,22 @@ public interface ThoughtClientInterface
   public double getBalance() throws GenericRpcException;
 
   /**
-   * The listaddressbalance RPC gets the balance in decimal thoughts for all addresses.
+   * The listaddressbalance RPC gets the balance in decimal thoughts for all
+   * addresses.
    * 
-   * @param minBalance The minimum balance for an address to be included in the list.
+   * @param minBalance The minimum balance for an address to be included in the
+   *                   list.
    * @see <a href=
    *      "https://bitcoin.org/en/developer-reference#listaddressbalances">listaddressbalances</a>
    */
-  public Map<String,Double> listAddressBalances(double minBalance) throws GenericRpcException;
-  
+  public Map<String, Double> listAddressBalances(double minBalance) throws GenericRpcException;
+
   /**
    * The getbalance RPC gets the balance in decimal thoughts across all accounts
    * or for a particular account.
    * 
    * @param account
-   *          The name of an account to get the balance for.
+   *                The name of an account to get the balance for.
    * 
    * @see <a href=
    *      "https://bitcoin.org/en/developer-reference#getbalance">getbalance</a>
@@ -402,25 +393,25 @@ public interface ThoughtClientInterface
    * or for a particular account.
    * 
    * @param account
-   *          The name of an account to get the balance for.
+   *                The name of an account to get the balance for.
    * @param minConf
-   *          The minimum number of confirmations
+   *                The minimum number of confirmations
    * 
    * @see <a href=
    *      "https://bitcoin.org/en/developer-reference#getbalance">getbalance</a>
    */
   public double getBalance(String account, int minConf) throws GenericRpcException;
-  
-  
+
   /**
-   * The getaddressbalance RPC gets the balance in decimal thoughts for the specified
+   * The getaddressbalance RPC gets the balance in decimal thoughts for the
+   * specified
    * addresses.
    * 
    * @see <a href=
    *      "https://bitcoin.org/en/developer-reference#getbalance">getbalance</a>
    */
   public double getAddressBalance(Set<String> addresses) throws GenericRpcException;
-  
+
   /**
    * The getinfo RPC prints various information about the node and the network.
    * 
@@ -440,9 +431,10 @@ public interface ThoughtClientInterface
    *      "https://bitcoin.org/en/developer-reference#getmininginfo">getmininginfo</a>
    */
   public MiningInfo getMiningInfo() throws GenericRpcException;
-  
+
   /**
-   * The getblocktemplate RPC returns the information necessary to create a new block.
+   * The getblocktemplate RPC returns the information necessary to create a new
+   * block.
    * 
    * @return Information used to create a new block.
    * 
@@ -450,11 +442,13 @@ public interface ThoughtClientInterface
    *      "https://bitcoin.org/en/developer-reference#getblocktemplate">getblocktemplate</a>
    */
   public BlockTemplate getBlockTemplate() throws GenericRpcException;
-  
+
   /**
-   * The getblocktemplate RPC returns the information necessary to create a new block.
+   * The getblocktemplate RPC returns the information necessary to create a new
+   * block.
    * 
-   * @param longpollid The ID returned from the no-params version of getblocktemplate
+   * @param longpollid The ID returned from the no-params version of
+   *                   getblocktemplate
    * @return Information used to create a new block.
    * 
    * @see <a href=
@@ -466,10 +460,12 @@ public interface ThoughtClientInterface
    * The createmultisig RPC creates a P2SH multi-signature address.
    * 
    * @param nRequired
-   *          The minimum (m) number of signatures required to spend this m-of-n
-   *          multisig script
+   *                  The minimum (m) number of signatures required to spend this
+   *                  m-of-n
+   *                  multisig script
    * @param keys
-   *          An array of strings with each string being a public key or address
+   *                  An array of strings with each string being a public key or
+   *                  address
    * 
    * @see <a href=
    *      "https://bitcoin.org/en/developer-reference#createmultisig">createmultisig</a>
@@ -487,8 +483,7 @@ public interface ThoughtClientInterface
    */
   NetworkInfo getNetworkInfo() throws GenericRpcException;
 
-  static interface Info extends Serializable
-  {
+  static interface Info extends Serializable {
 
     long version();
 
@@ -521,8 +516,7 @@ public interface ThoughtClientInterface
     String errors();
   }
 
-  static interface MiningInfo extends Serializable
-  {
+  static interface MiningInfo extends Serializable {
 
     int blocks();
 
@@ -544,46 +538,48 @@ public interface ThoughtClientInterface
 
     String chain();
   }
-  
-  static interface Masternode extends Serializable
-  {
-	  String payee();
-	  
-	  String script();
-	  
-	  long amount();
+
+  static interface Masternode extends Serializable {
+    String payee();
+
+    String script();
+
+    long amount();
   }
-  
-  static interface BlockTemplateTransaction extends Serializable
-  {
-    
+
+  static interface BlockTemplateTransaction extends Serializable {
+
     String data();
+
     String hash();
+
     List<Long> depends();
+
     long fee();
+
     long sigops();
+
     boolean required();
   }
-  
-  static interface BlockTemplate extends Serializable
-  {
+
+  static interface BlockTemplate extends Serializable {
 
     List<String> capabilities();
 
     long version();
 
     List<String> rules();
-    
+
     interface vbavailable {
-      
+
     }
 
     int vbrequired();
 
     String previousblockhash();
-    
+
     List<BlockTemplateTransaction> transactions();
-    
+
     interface coinbaseaux {
       String flags();
     }
@@ -595,37 +591,35 @@ public interface ThoughtClientInterface
     String target();
 
     long mintime();
-    
+
     List<String> mutable();
 
     String noncerange();
-    
+
     long sigoplimit();
-    
+
     long sizelimit();
-    
+
     long curtime();
-    
+
     String bits();
-    
+
     long height();
-    
+
     List<Masternode> masternode();
-    
+
     boolean masternode_payments_started();
-    
+
     boolean masternode_payments_enforced();
-    
+
     String coinbase_payload();
   }
-  
-  static interface SubmitBlockResult extends Serializable
-  {
-    
+
+  static interface SubmitBlockResult extends Serializable {
+
   }
 
-  static interface NetTotals extends Serializable
-  {
+  static interface NetTotals extends Serializable {
 
     long totalBytesRecv();
 
@@ -633,8 +627,7 @@ public interface ThoughtClientInterface
 
     long timeMillis();
 
-    interface uploadTarget extends Serializable
-    {
+    interface uploadTarget extends Serializable {
 
       long timeFrame();
 
@@ -652,8 +645,7 @@ public interface ThoughtClientInterface
     uploadTarget uploadTarget();
   }
 
-  static interface BlockChainInfo extends Serializable
-  {
+  static interface BlockChainInfo extends Serializable {
 
     String chain();
 
@@ -668,8 +660,7 @@ public interface ThoughtClientInterface
     String chainWork();
   }
 
-  static interface DecodedScript extends Serializable
-  {
+  static interface DecodedScript extends Serializable {
 
     String asm();
 
@@ -707,8 +698,7 @@ public interface ThoughtClientInterface
    */
   WalletInfo getWalletInfo();
 
-  static interface WalletInfo extends Serializable
-  {
+  static interface WalletInfo extends Serializable {
 
     long walletVersion();
 
@@ -731,8 +721,7 @@ public interface ThoughtClientInterface
     String hdMasterKeyId();
   }
 
-  static interface NetworkInfo extends Serializable
-  {
+  static interface NetworkInfo extends Serializable {
 
     long version();
 
@@ -757,8 +746,7 @@ public interface ThoughtClientInterface
     String warnings();
   }
 
-  static interface Network extends Serializable
-  {
+  static interface Network extends Serializable {
 
     String name();
 
@@ -771,16 +759,14 @@ public interface ThoughtClientInterface
     boolean proxyRandomizeCredentials();
   }
 
-  static interface MultiSig extends Serializable
-  {
+  static interface MultiSig extends Serializable {
 
     String address();
 
     String redeemScript();
   }
 
-  static interface NodeInfo extends Serializable
-  {
+  static interface NodeInfo extends Serializable {
 
     String addedNode();
 
@@ -790,16 +776,14 @@ public interface ThoughtClientInterface
 
   }
 
-  static interface Address extends Serializable
-  {
+  static interface Address extends Serializable {
 
     String address();
 
     String connected();
   }
 
-  static interface TxOut extends Serializable
-  {
+  static interface TxOut extends Serializable {
 
     String bestBlock();
 
@@ -823,8 +807,7 @@ public interface ThoughtClientInterface
 
   }
 
-  static interface Block extends Serializable
-  {
+  static interface Block extends Serializable {
 
     String hash();
 
@@ -859,8 +842,7 @@ public interface ThoughtClientInterface
     Block next() throws GenericRpcException;
   }
 
-  static interface TxOutSetInfo extends Serializable
-  {
+  static interface TxOutSetInfo extends Serializable {
 
     long height();
 
@@ -895,8 +877,9 @@ public interface ThoughtClientInterface
    * block database either as a JSON object or as a serialized block.
    * 
    * @param blockHash
-   *          The hash of the header of the block to get, encoded as hex in RPC
-   *          byte order
+   *                  The hash of the header of the block to get, encoded as hex
+   *                  in RPC
+   *                  byte order
    * 
    * @see <a href=
    *      "https://bitcoin.org/en/developer-reference#getblock">getblock</a>
@@ -908,8 +891,9 @@ public interface ThoughtClientInterface
    * block database as a serialized block.
    * 
    * @param blockHash
-   *          The hash of the header of the block to get, encoded as hex in RPC
-   *          byte order
+   *                  The hash of the header of the block to get, encoded as hex
+   *                  in RPC
+   *                  byte order
    * 
    * @see <a href=
    *      "https://bitcoin.org/en/developer-reference#getblock">getblock</a>
@@ -923,7 +907,7 @@ public interface ThoughtClientInterface
    * in the local best block chain.
    * 
    * @param height
-   *          The height of the block whose header hash should be returned.
+   *               The height of the block whose header hash should be returned.
    * @return The hash of the block at the requested height, encoded as hex in RPC
    *         byte order, or JSON null if an error occurred
    * 
@@ -993,8 +977,7 @@ public interface ThoughtClientInterface
    */
   String getBestBlockHash() throws GenericRpcException;
 
-  interface RawTransaction extends Serializable
-  {
+  interface RawTransaction extends Serializable {
 
     String hex();
 
@@ -1013,12 +996,11 @@ public interface ThoughtClientInterface
     /*
      *
      */
-    interface In extends TxInput, Serializable
-    {
+    interface In extends TxInput {
       boolean isCoinbase();
-      
+
       String coinbase();
-      
+
       Map<String, Object> scriptSig();
 
       long sequence();
@@ -1035,15 +1017,13 @@ public interface ThoughtClientInterface
      */
     List<In> vIn(); // TODO : Create special interface instead of this
 
-    interface Out extends Serializable
-    {
+    interface Out extends Serializable {
 
       double value();
 
       int n();
 
-      interface ScriptPubKey extends Serializable
-      {
+      interface ScriptPubKey extends Serializable {
 
         String asm();
 
@@ -1085,7 +1065,8 @@ public interface ThoughtClientInterface
    * your Thought startup settings.
    * 
    * @param txId
-   *          The TXID of the transaction to get, encoded as hex in RPC byte order
+   *             The TXID of the transaction to get, encoded as hex in RPC byte
+   *             order
    * 
    * @see <a href=
    *      "https://bitcoin.org/en/developer-reference#getrawtransaction">getrawtransaction</a>
@@ -1096,7 +1077,8 @@ public interface ThoughtClientInterface
    * The getrawtransaction RPC gets a hex-encoded serialized transaction.
    * 
    * @param txId
-   *          The TXID of the transaction to get, encoded as hex in RPC byte order
+   *             The TXID of the transaction to get, encoded as hex in RPC byte
+   *             order
    * 
    * @see <a href=
    *      "https://bitcoin.org/en/developer-reference#getrawtransaction">getrawtransaction</a>
@@ -1109,7 +1091,7 @@ public interface ThoughtClientInterface
    * It does not count coinbase transactions.
    *
    * @param address
-   *          The address whose transactions should be tallied
+   *                The address whose transactions should be tallied
    * @return The number of bitcoins received by the address
    * 
    * @see <a href=
@@ -1123,9 +1105,9 @@ public interface ThoughtClientInterface
    * It does not count coinbase transactions.
    *
    * @param address
-   *          The address whose transactions should be tallied
+   *                The address whose transactions should be tallied
    * @param minConf
-   *          The minimum number of confirmations
+   *                The minimum number of confirmations
    * @return The number of bitcoins received by the address
    * 
    * @see <a href=
@@ -1138,8 +1120,9 @@ public interface ThoughtClientInterface
    * formatted in the wallet import format created by the dumpprivkey RPC.
    * 
    * @param bitcoinPrivKey
-   *          The private key to import into the wallet encoded in base58check
-   *          using wallet import format (WIF)
+   *                       The private key to import into the wallet encoded in
+   *                       base58check
+   *                       using wallet import format (WIF)
    * 
    * @see <a href=
    *      "https://bitcoin.org/en/developer-reference#importprivkey">importprivkey</a>
@@ -1151,11 +1134,13 @@ public interface ThoughtClientInterface
    * formatted in the wallet import format created by the dumpprivkey RPC.
    * 
    * @param bitcoinPrivKey
-   *          The private key to import into the wallet encoded in base58check
-   *          using wallet import format (WIF)
+   *                       The private key to import into the wallet encoded in
+   *                       base58check
+   *                       using wallet import format (WIF)
    * @param account
-   *          The name of an account to which transactions involving the key
-   *          should be assigned.
+   *                       The name of an account to which transactions involving
+   *                       the key
+   *                       should be assigned.
    * 
    * @see <a href=
    *      "https://bitcoin.org/en/developer-reference#importprivkey">importprivkey</a>
@@ -1167,15 +1152,19 @@ public interface ThoughtClientInterface
    * formatted in the wallet import format created by the dumpprivkey RPC.
    * 
    * @param bitcoinPrivKey
-   *          The private key to import into the wallet encoded in base58check
-   *          using wallet import format (WIF)
+   *                       The private key to import into the wallet encoded in
+   *                       base58check
+   *                       using wallet import format (WIF)
    * @param account
-   *          The name of an account to which transactions involving the key
-   *          should be assigned.
+   *                       The name of an account to which transactions involving
+   *                       the key
+   *                       should be assigned.
    * @param rescan
-   *          Set to true (the default) to rescan the entire local block database
-   *          for transactions affecting any address or pubkey script in the
-   *          wallet.
+   *                       Set to true (the default) to rescan the entire local
+   *                       block database
+   *                       for transactions affecting any address or pubkey script
+   *                       in the
+   *                       wallet.
    * 
    * @see <a href=
    *      "https://bitcoin.org/en/developer-reference#importprivkey">importprivkey</a>
@@ -1188,12 +1177,14 @@ public interface ThoughtClientInterface
    * that address or pubkey script without being able to spend any of its outputs.
    * 
    * @param address
-   *          Either a P2PKH or P2SH address encoded in base58check, or a pubkey
-   *          script encoded as hex
+   *                Either a P2PKH or P2SH address encoded in base58check, or a
+   *                pubkey
+   *                script encoded as hex
    * @param account
-   *          An account name into which the address should be placed.
+   *                An account name into which the address should be placed.
    * @param rescan
-   *          Set to true (the default) to rescan the entire local block database
+   *                Set to true (the default) to rescan the entire local block
+   *                database
    * 
    * @return Null on success
    * 
@@ -1218,8 +1209,9 @@ public interface ThoughtClientInterface
    * The listaccounts RPC lists accounts and their balances.
    *
    * @param minConf
-   *          The minimum number of confirmations an externally-generated
-   *          transaction must have before it is counted towards the balance.
+   *                The minimum number of confirmations an externally-generated
+   *                transaction must have before it is counted towards the
+   *                balance.
    * @return Map that has account names as keys, account balances as values
    * 
    * @see <a href=
@@ -1227,8 +1219,7 @@ public interface ThoughtClientInterface
    */
   Map<String, Number> listAccounts(int minConf) throws GenericRpcException;
 
-  static interface ReceivedAddress extends Serializable
-  {
+  static interface ReceivedAddress extends Serializable {
 
     String address();
 
@@ -1255,8 +1246,9 @@ public interface ThoughtClientInterface
    * each address.
    * 
    * @param minConf
-   *          The minimum number of confirmations an externally-generated
-   *          transaction must have before it is counted towards the balance.
+   *                The minimum number of confirmations an externally-generated
+   *                transaction must have before it is counted towards the
+   *                balance.
    * 
    * @return An array containing objects each describing a particular address
    * 
@@ -1270,10 +1262,13 @@ public interface ThoughtClientInterface
    * each address.
    * 
    * @param minConf
-   *          The minimum number of confirmations an externally-generated
-   *          transaction must have before it is counted towards the balance.
+   *                     The minimum number of confirmations an
+   *                     externally-generated
+   *                     transaction must have before it is counted towards the
+   *                     balance.
    * @param includeEmpty
-   *          Set to true to display accounts which have never received a payment.
+   *                     Set to true to display accounts which have never received
+   *                     a payment.
    * 
    * @return An array containing objects each describing a particular address
    * 
@@ -1282,8 +1277,7 @@ public interface ThoughtClientInterface
    */
   List<ReceivedAddress> listReceivedByAddress(int minConf, boolean includeEmpty) throws GenericRpcException;
 
-  static interface Transaction extends Serializable
-  {
+  static interface Transaction extends Serializable {
 
     String account();
 
@@ -1294,7 +1288,7 @@ public interface ThoughtClientInterface
     double amount();
 
     double fee();
-    
+
     boolean generated();
 
     int confirmations();
@@ -1310,17 +1304,21 @@ public interface ThoughtClientInterface
     Date time();
 
     Date timeReceived();
-    
-    interface Details
-    {
+
+    interface Details {
       String account();
+
       String address();
+
       String category();
+
       double amount();
+
       String label();
+
       int vout();
     }
-    
+
     List<Details> details();
 
     String comment();
@@ -1330,8 +1328,7 @@ public interface ThoughtClientInterface
     RawTransaction raw();
   }
 
-  static interface TransactionsSinceBlock extends Serializable
-  {
+  static interface TransactionsSinceBlock extends Serializable {
 
     List<Transaction> transactions();
 
@@ -1356,7 +1353,7 @@ public interface ThoughtClientInterface
    * particular depth.
    * 
    * @param blockHash
-   *          The hash of a block header encoded as hex in RPC byte order.
+   *                  The hash of a block header encoded as hex in RPC byte order.
    * @return An object containing an array of transactions and the lastblock field
    * 
    * @see <a href=
@@ -1370,10 +1367,12 @@ public interface ThoughtClientInterface
    * particular depth.
    * 
    * @param blockHash
-   *          The hash of a block header encoded as hex in RPC byte order.
+   *                            The hash of a block header encoded as hex in RPC
+   *                            byte order.
    * @param targetConfirmations
-   *          Sets the lastblock field of the results to the header hash of a
-   *          block with this many confirmations.
+   *                            Sets the lastblock field of the results to the
+   *                            header hash of a
+   *                            block with this many confirmations.
    * 
    * @return An object containing an array of transactions and the lastblock field
    * 
@@ -1399,7 +1398,7 @@ public interface ThoughtClientInterface
    * wallet.
    * 
    * @param account
-   *          The name of an account to get transactinos from (deprecated).
+   *                The name of an account to get transactinos from (deprecated).
    * 
    * @return An array containing objects, with each object describing a payment or
    *         internal accounting entry (not a transaction).
@@ -1414,9 +1413,9 @@ public interface ThoughtClientInterface
    * wallet.
    * 
    * @param account
-   *          The name of an account to get transactinos from (deprecated).
+   *                The name of an account to get transactinos from (deprecated).
    * @param count
-   *          The number of the most recent transactions to list.
+   *                The number of the most recent transactions to list.
    * 
    * @return An array containing objects, with each object describing a payment or
    *         internal accounting entry (not a transaction).
@@ -1431,12 +1430,12 @@ public interface ThoughtClientInterface
    * wallet.
    * 
    * @param account
-   *          The name of an account to get transactinos from (deprecated).
+   *                The name of an account to get transactinos from (deprecated).
    * @param count
-   *          The number of the most recent transactions to list.
+   *                The number of the most recent transactions to list.
    * @param skip
-   *          The number of the most recent transactions which should not be
-   *          returned.
+   *                The number of the most recent transactions which should not be
+   *                returned.
    * 
    * @return An array containing objects, with each object describing a payment or
    *         internal accounting entry (not a transaction).
@@ -1446,8 +1445,7 @@ public interface ThoughtClientInterface
    */
   List<Transaction> listTransactions(String account, int count, int skip) throws GenericRpcException;
 
-  interface Unspent extends TxInput, TxOutput, Serializable
-  {
+  interface Unspent extends TxInput, TxOutput {
 
     @Override
     String txid();
@@ -1466,11 +1464,11 @@ public interface ThoughtClientInterface
     double amount();
 
     int confirmations();
-    
+
     boolean spendable();
-    
+
     boolean solvable();
-    
+
     int ps_rounds();
   }
 
@@ -1490,8 +1488,9 @@ public interface ThoughtClientInterface
    * to this wallet.
    * 
    * @param minConf
-   *          The minimum number of confirmations the transaction containing an
-   *          output must have in order to be returned.
+   *                The minimum number of confirmations the transaction containing
+   *                an
+   *                output must have in order to be returned.
    * 
    * @return An array of objects each describing an unspent output.
    * 
@@ -1505,11 +1504,13 @@ public interface ThoughtClientInterface
    * to this wallet.
    * 
    * @param minConf
-   *          The minimum number of confirmations the transaction containing an
-   *          output must have in order to be returned.
+   *                The minimum number of confirmations the transaction containing
+   *                an
+   *                output must have in order to be returned.
    * @param maxConf
-   *          The maximum number of confirmations the transaction containing an
-   *          output may have in order to be returned.
+   *                The maximum number of confirmations the transaction containing
+   *                an
+   *                output may have in order to be returned.
    * 
    * @return An array of objects each describing an unspent output.
    * 
@@ -1523,13 +1524,16 @@ public interface ThoughtClientInterface
    * to this wallet.
    * 
    * @param minConf
-   *          The minimum number of confirmations the transaction containing an
-   *          output must have in order to be returned.
+   *                  The minimum number of confirmations the transaction
+   *                  containing an
+   *                  output must have in order to be returned.
    * @param maxConf
-   *          The maximum number of confirmations the transaction containing an
-   *          output may have in order to be returned.
+   *                  The maximum number of confirmations the transaction
+   *                  containing an
+   *                  output may have in order to be returned.
    * @param addresses
-   *          Only outputs which pay an address in this array will be returned
+   *                  Only outputs which pay an address in this array will be
+   *                  returned
    * 
    * @return An array of objects each describing an unspent output.
    * 
@@ -1537,18 +1541,19 @@ public interface ThoughtClientInterface
    *      "https://bitcoin.org/en/developer-reference#listunspent">listunspent</a>
    */
   List<Unspent> listUnspent(int minConf, int maxConf, String... addresses) throws GenericRpcException;
-  String        listUnspentJson(int minConf, int maxConf, String... addresses) throws GenericRpcException;
+
+  String listUnspentJson(int minConf, int maxConf, String... addresses) throws GenericRpcException;
 
   /**
    * The move RPC moves a specified amount from one account in your wallet to
    * another using an off-block-chain transaction.
    * 
    * @param fromAccount
-   *          The name of the account to move the funds from
+   *                    The name of the account to move the funds from
    * @param toAccount
-   *          The name of the account to move the funds to
+   *                    The name of the account to move the funds to
    * @param amount
-   *          The amount of bitcoins to move
+   *                    The amount of bitcoins to move
    * 
    * @see <a href="https://bitcoin.org/en/developer-reference#move">move</a>
    */
@@ -1559,13 +1564,13 @@ public interface ThoughtClientInterface
    * another using an off-block-chain transaction.
    * 
    * @param fromAccount
-   *          The name of the account to move the funds from
+   *                    The name of the account to move the funds from
    * @param toAccount
-   *          The name of the account to move the funds to
+   *                    The name of the account to move the funds to
    * @param amount
-   *          The amount of bitcoins to move
+   *                    The amount of bitcoins to move
    * @param comment
-   *          A comment to assign to this move payment
+   *                    A comment to assign to this move payment
    * 
    * @see <a href="https://bitcoin.org/en/developer-reference#move">move</a>
    */
@@ -1581,17 +1586,20 @@ public interface ThoughtClientInterface
    * @see <a href="https://bitcoin.org/en/developer-reference#move">move</a>
    * @deprecated
    */
-  boolean move(String fromAccount, String toAccount, double amount, int minConf, String comment) throws GenericRpcException;
+  boolean move(String fromAccount, String toAccount, double amount, int minConf, String comment)
+      throws GenericRpcException;
 
   /**
    * The sendfrom RPC spends an amount from a local account to a Thought address.
    * 
    * @param fromAccount
-   *          The name of the account from which the thoughts should be spent.
+   *                    The name of the account from which the thoughts should be
+   *                    spent.
    * @param toAddress
-   *          A P2PKH or P2SH address to which the thoughts should be sent
+   *                    A P2PKH or P2SH address to which the thoughts should be
+   *                    sent
    * @param amount
-   *          The amount to spend in thoughts.
+   *                    The amount to spend in thoughts.
    * 
    * @return The TXID of the sent transaction, encoded as hex in RPC byte order
    * 
@@ -1604,14 +1612,18 @@ public interface ThoughtClientInterface
    * The sendfrom RPC spends an amount from a local account to a Thought address.
    * 
    * @param fromAccount
-   *          The name of the account from which the thoughts should be spent.
+   *                    The name of the account from which the thoughts should be
+   *                    spent.
    * @param toAddress
-   *          A P2PKH or P2SH address to which the thoughts should be sent
+   *                    A P2PKH or P2SH address to which the thoughts should be
+   *                    sent
    * @param amount
-   *          The amount to spend in thoughts.
+   *                    The amount to spend in thoughts.
    * @param minConf
-   *          The minimum number of confirmations an incoming transaction must
-   *          have for its outputs to be credited to this account’s balance.
+   *                    The minimum number of confirmations an incoming
+   *                    transaction must
+   *                    have for its outputs to be credited to this account’s
+   *                    balance.
    * 
    * @return The TXID of the sent transaction, encoded as hex in RPC byte order
    * 
@@ -1624,54 +1636,64 @@ public interface ThoughtClientInterface
    * The sendfrom RPC spends an amount from a local account to a Thought address.
    * 
    * @param fromAccount
-   *          The name of the account from which the thoughts should be spent.
+   *                    The name of the account from which the thoughts should be
+   *                    spent.
    * @param toAddress
-   *          A P2PKH or P2SH address to which the thoughts should be sent
+   *                    A P2PKH or P2SH address to which the thoughts should be
+   *                    sent
    * @param amount
-   *          The amount to spend in thoughts.
+   *                    The amount to spend in thoughts.
    * @param minConf
-   *          The minimum number of confirmations an incoming transaction must
-   *          have for its outputs to be credited to this account’s balance.
+   *                    The minimum number of confirmations an incoming
+   *                    transaction must
+   *                    have for its outputs to be credited to this account’s
+   *                    balance.
    * @param addlocked
-   *          Whether to include transactions locked via InstantSend.
+   *                    Whether to include transactions locked via InstantSend.
    * @param comment
-   *          A locally-stored (not broadcast) comment assigned to this
-   *          transaction.
+   *                    A locally-stored (not broadcast) comment assigned to this
+   *                    transaction.
    * 
    * @return The TXID of the sent transaction, encoded as hex in RPC byte order
    * 
    * @see <a href=
    *      "https://bitcoin.org/en/developer-reference#sendfrom">sendfrom</a>
    */
-  String sendFrom(String fromAccount, String toAddress, double amount, int minConf, boolean addlocked, String comment) throws GenericRpcException;
+  String sendFrom(String fromAccount, String toAddress, double amount, int minConf, boolean addlocked, String comment)
+      throws GenericRpcException;
 
   /**
    * The sendfrom RPC spends an amount from a local account to a Thought address.
    * 
    * @param fromAccount
-   *          The name of the account from which the thoughts should be spent.
+   *                    The name of the account from which the thoughts should be
+   *                    spent.
    * @param toAddress
-   *          A P2PKH or P2SH address to which the thoughts should be sent
+   *                    A P2PKH or P2SH address to which the thoughts should be
+   *                    sent
    * @param amount
-   *          The amount to spend in thoughts.
+   *                    The amount to spend in thoughts.
    * @param minConf
-   *          The minimum number of confirmations an incoming transaction must
-   *          have for its outputs to be credited to this account’s balance.
+   *                    The minimum number of confirmations an incoming
+   *                    transaction must
+   *                    have for its outputs to be credited to this account’s
+   *                    balance.
    * @param addlocked
-   *          Whether to include transactions locked via InstantSend.
+   *                    Whether to include transactions locked via InstantSend.
    * @param comment
-   *          A locally-stored (not broadcast) comment assigned to this
-   *          transaction.
+   *                    A locally-stored (not broadcast) comment assigned to this
+   *                    transaction.
    * @param commentTo
-   *          A locally-stored (not broadcast) comment assigned to this
-   *          transaction
+   *                    A locally-stored (not broadcast) comment assigned to this
+   *                    transaction
    * 
    * @return The TXID of the sent transaction, encoded as hex in RPC byte order
    * 
    * @see <a href=
    *      "https://bitcoin.org/en/developer-reference#sendfrom">sendfrom</a>
    */
-  String sendFrom(String fromAccount, String toAddress, double amount, int minConf, boolean addlocked, String comment, String commentTo)
+  String sendFrom(String fromAccount, String toAddress, double amount, int minConf, boolean addlocked, String comment,
+      String commentTo)
       throws GenericRpcException;
 
   /**
@@ -1679,7 +1701,7 @@ public interface ThoughtClientInterface
    * peer-to-peer network.
    * 
    * @param hex
-   *          The serialized transaction to broadcast encoded as hex
+   *            The serialized transaction to broadcast encoded as hex
    * 
    * @return If the transaction was accepted by the node for broadcast, this will
    *         be the TXID of the transaction encoded as hex in RPC byte order.
@@ -1693,9 +1715,9 @@ public interface ThoughtClientInterface
    * The sendtoaddress RPC spends an amount to a given address.
    * 
    * @param toAddress
-   *          A P2PKH or P2SH address to which the thoughts should be sent
+   *                  A P2PKH or P2SH address to which the thoughts should be sent
    * @param amount
-   *          The amount to spent in thoughts
+   *                  The amount to spent in thoughts
    * 
    * @return The TXID of the sent transaction, encoded as hex in RPC byte order
    * 
@@ -1708,12 +1730,12 @@ public interface ThoughtClientInterface
    * The sendtoaddress RPC spends an amount to a given address.
    * 
    * @param toAddress
-   *          A P2PKH or P2SH address to which the thoughts should be sent
+   *                  A P2PKH or P2SH address to which the thoughts should be sent
    * @param amount
-   *          The amount to spent in thoughts
+   *                  The amount to spent in thoughts
    * @param comment
-   *          A locally-stored (not broadcast) comment assigned to this
-   *          transaction.
+   *                  A locally-stored (not broadcast) comment assigned to this
+   *                  transaction.
    * 
    * @return The TXID of the sent transaction, encoded as hex in RPC byte order
    * 
@@ -1726,15 +1748,15 @@ public interface ThoughtClientInterface
    * The sendtoaddress RPC spends an amount to a given address.
    * 
    * @param toAddress
-   *          A P2PKH or P2SH address to which the thoughts should be sent
+   *                  A P2PKH or P2SH address to which the thoughts should be sent
    * @param amount
-   *          The amount to spent in thoughts
+   *                  The amount to spent in thoughts
    * @param comment
-   *          A locally-stored (not broadcast) comment assigned to this
-   *          transaction.
+   *                  A locally-stored (not broadcast) comment assigned to this
+   *                  transaction.
    * @param commentTo
-   *          A locally-stored (not broadcast) comment assigned to this
-   *          transaction
+   *                  A locally-stored (not broadcast) comment assigned to this
+   *                  transaction
    * 
    * @return The TXID of the sent transaction, encoded as hex in RPC byte order
    * 
@@ -1742,57 +1764,59 @@ public interface ThoughtClientInterface
    *      "https://bitcoin.org/en/developer-reference#sendtoaddress">sendtoaddress</a>
    */
   String sendToAddress(String toAddress, double amount, String comment, String commentTo) throws GenericRpcException;
-  
+
   /**
    * The sendtoaddress RPC spends an amount to a given address.
    * 
    * @param toAddress
-   *          A P2PKH or P2SH address to which the thoughts should be sent
+   *                              A P2PKH or P2SH address to which the thoughts
+   *                              should be sent
    * @param amount
-   *          The amount to spent in thoughts
+   *                              The amount to spent in thoughts
    * @param comment
-   *          A locally-stored (not broadcast) comment assigned to this
-   *          transaction.
+   *                              A locally-stored (not broadcast) comment
+   *                              assigned to this
+   *                              transaction.
    * @param commentTo
-   *          A locally-stored (not broadcast) comment assigned to this
-   *          transaction
-   *          
+   *                              A locally-stored (not broadcast) comment
+   *                              assigned to this
+   *                              transaction
    * @param subtractfeefromamount
-   *          The fee will be subtracted from the amount being sent
-   *          
+   *                              The fee will be subtracted from the amount being
+   *                              sent
    * @param use_is
-   *          Send this transaction as InstantSend
-   *          
+   *                              Send this transaction as InstantSend
    * @param use_ps
-   *          Send anonymized funds only
+   *                              Send anonymized funds only
    * 
    * @return The TXID of the sent transaction, encoded as hex in RPC byte order
    * 
    * @see <a href=
    *      "https://bitcoin.org/en/developer-reference#sendtoaddress">sendtoaddress</a>
    */
-  String sendToAddress(String toAddress, double amount, String comment, String commentTo, boolean subtractfeefromamount, boolean use_is, boolean use_ps) throws GenericRpcException;
+  String sendToAddress(String toAddress, double amount, String comment, String commentTo, boolean subtractfeefromamount,
+      boolean use_is, boolean use_ps) throws GenericRpcException;
 
   /**
    * The signrawtransaction RPC signs a transaction in the serialized transaction
    * format using private keys stored in the wallet or provided in the call.
    * 
    * @param hex
-   *          The transaction to sign as a serialized transaction
+   *                    The transaction to sign as a serialized transaction
    * @param inputs
-   *          The previous outputs being spent by this transaction
+   *                    The previous outputs being spent by this transaction
    * @param privateKeys
-   *          An array holding private keys.
+   *                    An array holding private keys.
    * 
    * @return The results of the signature
    * 
    * @see <a href=
    *      "https://bitcoin.org/en/developer-reference#signrawtransaction">signrawtransaction</a>
    */
-  String signRawTransaction(String hex, List<? extends TxInput> inputs, List<String> privateKeys) throws GenericRpcException;
+  String signRawTransaction(String hex, List<? extends TxInput> inputs, List<String> privateKeys)
+      throws GenericRpcException;
 
-  static interface AddressValidationResult extends Serializable
-  {
+  static interface AddressValidationResult extends Serializable {
 
     boolean isValid();
 
@@ -1820,7 +1844,7 @@ public interface ThoughtClientInterface
    * The generate RPC nearly instantly generates blocks.
    *
    * @param numBlocks
-   *          The number of blocks to generate.
+   *                  The number of blocks to generate.
    * @return An array containing the block header hashes of the generated blocks
    * 
    * @see <a href=
@@ -1832,10 +1856,11 @@ public interface ThoughtClientInterface
    * The generate RPC nearly instantly generates blocks.
    *
    * @param numBlocks
-   *          The number of blocks to generate.
+   *                  The number of blocks to generate.
    * @param maxTries
-   *          The maximum number of iterations that are tried to create the
-   *          requested number of blocks.
+   *                  The maximum number of iterations that are tried to create
+   *                  the
+   *                  requested number of blocks.
    * @return An array containing the block header hashes of the generated blocks
    * 
    * @see <a href=
@@ -1847,9 +1872,9 @@ public interface ThoughtClientInterface
    * The generatetoaddress RPC mines blocks immediately to a specified address.
    * 
    * @param numBlocks
-   *          The number of blocks to generate.
+   *                  The number of blocks to generate.
    * @param address
-   *          The address to send the newly generated thoughts to
+   *                  The address to send the newly generated thoughts to
    * 
    * @see <a href=
    *      "https://bitcoin.org/en/developer-reference#generatetoaddress">generatetoaddress</a>
@@ -1860,7 +1885,8 @@ public interface ThoughtClientInterface
    * The validateaddress RPC returns information about the given Thought address.
    * 
    * @param address
-   *          The P2PKH or P2SH address to validate encoded in base58check format
+   *                The P2PKH or P2SH address to validate encoded in base58check
+   *                format
    * @return Information about the address
    * 
    * @see <a href=
@@ -1873,8 +1899,8 @@ public interface ThoughtClientInterface
    * be paid for a transaction to be included within a certain number of blocks.
    * 
    * @param nBlocks
-   *          The maximum number of blocks a transaction should have to wait
-   *          before it is predicted to be included in a block.
+   *                The maximum number of blocks a transaction should have to wait
+   *                before it is predicted to be included in a block.
    * @return The estimated fee the transaction should pay in order to be included
    *         within the specified number of blocks.
    * 
@@ -1894,9 +1920,10 @@ public interface ThoughtClientInterface
    * major release (planned for Bitcoin Core 0.15.0).
    * 
    * @param nBlocks
-   *          The maximum number of blocks a transaction should have to wait
-   *          before it is predicted to be included in a block based purely on its
-   *          priority
+   *                The maximum number of blocks a transaction should have to wait
+   *                before it is predicted to be included in a block based purely
+   *                on its
+   *                priority
    * 
    * @see <a href=
    *      "https://bitcoin.org/en/developer-reference#estimatepriority">estimatepriority</a>
@@ -1907,9 +1934,9 @@ public interface ThoughtClientInterface
    * Permanently marks a block as invalid, as if it violated a consensus rule.
    *
    * @param blockHash
-   *          the hash of the block to mark as invalid
+   *                  the hash of the block to mark as invalid
    * 
-   *          [TODO] Add to https://bitcoin.org/en/developer-reference
+   *                  [TODO] Add to https://bitcoin.org/en/developer-reference
    */
   void invalidateBlock(String blockHash) throws GenericRpcException;
 
@@ -1918,14 +1945,13 @@ public interface ThoughtClientInterface
    * activation. This can be used to undo the effects of invalidateblock.
    *
    * @param blockHash
-   *          The hash of the block to reconsider
+   *                  The hash of the block to reconsider
    * 
-   *          [TODO] Add to https://bitcoin.org/en/developer-reference
+   *                  [TODO] Add to https://bitcoin.org/en/developer-reference
    */
   void reconsiderBlock(String blockHash) throws GenericRpcException;
 
-  static interface PeerInfoResult extends Serializable
-  {
+  static interface PeerInfoResult extends Serializable {
 
     long getId();
 
@@ -2040,7 +2066,7 @@ public interface ThoughtClientInterface
    * The decodescript RPC decodes a hex-encoded P2SH redeem script.
    * 
    * @param hex
-   *          The redeem script to decode as a hex-encoded serialized script
+   *            The redeem script to decode as a hex-encoded serialized script
    * @return An object describing the decoded script, or JSON null if the script
    *         could not be decoded
    * 
@@ -2087,8 +2113,8 @@ public interface ThoughtClientInterface
    * created by this wallet.
    * 
    * @param amount
-   *          The transaction fee to pay, in bitcoins, for each kilobyte of
-   *          transaction data.
+   *               The transaction fee to pay, in bitcoins, for each kilobyte of
+   *               transaction data.
    * 
    * @see <a href=
    *      "https://bitcoin.org/en/developer-reference#settxfee">settxfee</a>
@@ -2100,9 +2126,10 @@ public interface ThoughtClientInterface
    * try a connection to a node once.
    * 
    * @param node
-   *          The node to add as a string in the form of <IP address>:<port>.
+   *                The node to add as a string in the form of <IP
+   *                address>:<port>.
    * @param command
-   *          What to do with the IP address above.
+   *                What to do with the IP address above.
    * 
    * @see <a href="https://bitcoin.org/en/developer-reference#addnode">addnode</a>
    */
@@ -2113,7 +2140,7 @@ public interface ThoughtClientInterface
    * can be a directory or a path with filename.
    * 
    * @param destination
-   *          A filename or directory name.
+   *                    A filename or directory name.
    * 
    * @see <a href=
    *      "https://bitcoin.org/en/developer-reference#backupwallet">backupwallet</a>
@@ -2124,9 +2151,9 @@ public interface ThoughtClientInterface
    * The signmessage RPC signs a message with the private key of an address.
    * 
    * @param adress
-   *          A P2PKH address whose private key belongs to this wallet
+   *                A P2PKH address whose private key belongs to this wallet
    * @param message
-   *          The message to sign
+   *                The message to sign
    * 
    * @return The signature of the message, encoded in base64.
    * 
@@ -2140,7 +2167,7 @@ public interface ThoughtClientInterface
    * human-readable format.
    * 
    * @param filename
-   *          The file in which the wallet dump will be placed.
+   *                 The file in which the wallet dump will be placed.
    * 
    * @see <a href=
    *      "https://bitcoin.org/en/developer-reference#dumpwallet">dumpwallet</a>
@@ -2153,8 +2180,9 @@ public interface ThoughtClientInterface
    * currently in the wallet.
    * 
    * @param filename
-   *          The file to import. The path is relative to Bitcoin Core’s working
-   *          directory
+   *                 The file to import. The path is relative to Bitcoin Core’s
+   *                 working
+   *                 directory
    * 
    * @see <a href=
    *      "https://bitcoin.org/en/developer-reference#importwallet">importwallet</a>
@@ -2176,7 +2204,7 @@ public interface ThoughtClientInterface
    * confirmations.
    * 
    * @param account
-   *          The name of the account containing the addresses to get.
+   *                The name of the account containing the addresses to get.
    * @return The number of bitcoins received by the account.
    * 
    * @see <a href=
@@ -2190,7 +2218,7 @@ public interface ThoughtClientInterface
    * need to enter the passphrase to use private keys.
    * 
    * @param passPhrase
-   *          The passphrase to use for the encrypted wallet.
+   *                   The passphrase to use for the encrypted wallet.
    * 
    * @see <a href=
    *      "https://bitcoin.org/en/developer-reference#encryptwallet">encryptwallet</a>
@@ -2204,10 +2232,11 @@ public interface ThoughtClientInterface
    * one.
    * 
    * @param passPhrase
-   *          The passphrase that unlocks the wallet
+   *                   The passphrase that unlocks the wallet
    * @param timeOut
-   *          The number of seconds after which the decryption key will be
-   *          automatically deleted from memory
+   *                   The number of seconds after which the decryption key will
+   *                   be
+   *                   automatically deleted from memory
    * 
    * @see <a href=
    *      "https://bitcoin.org/en/developer-reference#walletpassphrase">walletpassphrase</a>
@@ -2218,13 +2247,15 @@ public interface ThoughtClientInterface
    * The verifymessage RPC verifies a signed message.
    * 
    * @param address
-   *          The P2PKH address corresponding to the private key which made the
-   *          signature.
+   *                  The P2PKH address corresponding to the private key which
+   *                  made the
+   *                  signature.
    * @param signature
-   *          The signature created by the signer encoded as base-64 (the format
-   *          output by the signmessage RPC)
+   *                  The signature created by the signer encoded as base-64 (the
+   *                  format
+   *                  output by the signmessage RPC)
    * @param message
-   *          The message exactly as it was signed
+   *                  The message exactly as it was signed
    * 
    * @see <a href=
    *      "https://bitcoin.org/en/developer-reference#verifymessage">verifymessage</a>
@@ -2235,10 +2266,12 @@ public interface ThoughtClientInterface
    * The addmultisigaddress RPC adds a P2SH multisig address to the wallet.
    * 
    * @param nRequired
-   *          The minimum (m) number of signatures required to spend this m-of-n
-   *          multisig script
+   *                  The minimum (m) number of signatures required to spend this
+   *                  m-of-n
+   *                  multisig script
    * @param keyObject
-   *          An array of strings with each string being a public key or address
+   *                  An array of strings with each string being a public key or
+   *                  address
    * @return The P2SH multisig address.
    * 
    * @see <a href=
@@ -2250,12 +2283,14 @@ public interface ThoughtClientInterface
    * The addmultisigaddress RPC adds a P2SH multisig address to the wallet.
    * 
    * @param nRequired
-   *          The minimum (m) number of signatures required to spend this m-of-n
-   *          multisig script
+   *                  The minimum (m) number of signatures required to spend this
+   *                  m-of-n
+   *                  multisig script
    * @param keyObject
-   *          An array of strings with each string being a public key or address
+   *                  An array of strings with each string being a public key or
+   *                  address
    * @param account
-   *          The account name in which the address should be stored.
+   *                  The account name in which the address should be stored.
    * 
    * @return The P2SH multisig address.
    * 
@@ -2280,10 +2315,11 @@ public interface ThoughtClientInterface
    * added using the addnode RPC will have their information displayed.
    * 
    * @param details
-   *          Removed in Bitcoin Core 0.14.0
+   *                Removed in Bitcoin Core 0.14.0
    * @param node
-   *          The node to get information about in the same <IP address>:<port>
-   *          format as the addnode RPC.
+   *                The node to get information about in the same <IP
+   *                address>:<port>
+   *                format as the addnode RPC.
    * @return An array containing objects describing each added node.
    * 
    * @see <a href=
@@ -2296,8 +2332,8 @@ public interface ThoughtClientInterface
    * block chain, and broadcasts it to the network.
    * 
    * @param hexData
-   *          The full block to submit in serialized block format as hex
-   * @return  The String received from thoughtd
+   *                The full block to submit in serialized block format as hex
+   * @return The String received from thoughtd
    * 
    * @see <a href=
    *      "https://bitcoin.org/en/developer-reference#submitblock">submitblock</a>
@@ -2309,7 +2345,7 @@ public interface ThoughtClientInterface
    * transaction.
    * 
    * @param txId
-   *          The TXID of the transaction to get details about.
+   *             The TXID of the transaction to get details about.
    * 
    * @see <a href=
    *      "https://bitcoin.org/en/developer-reference#gettransaction">gettransaction</a>
@@ -2320,10 +2356,12 @@ public interface ThoughtClientInterface
    * The gettxout RPC returns details about an unspent transaction output (UTXO).
    * 
    * @param txId
-   *          The TXID of the transaction containing the output to get, encoded as
-   *          hex in RPC byte order
+   *             The TXID of the transaction containing the output to get, encoded
+   *             as
+   *             hex in RPC byte order
    * @param vout
-   *          The output index number (vout) of the output within the transaction
+   *             The output index number (vout) of the output within the
+   *             transaction
    * 
    * @return Information about the output.
    * 
@@ -2332,8 +2370,7 @@ public interface ThoughtClientInterface
    */
   TxOut getTxOut(String txId, long vout);
 
-  static interface SmartFeeResult extends Serializable
-  {
+  static interface SmartFeeResult extends Serializable {
 
     double feeRate();
 
@@ -2347,55 +2384,52 @@ public interface ThoughtClientInterface
    * defined in BIP 141 (witness data is discounted).
    * 
    * @param blocks
-   *          Confirmation target in blocks
+   *               Confirmation target in blocks
    * @return estimate fee rate in BTC/kB
    * 
    *         [TODO] Add to https://bitcoin.org/en/developer-reference
    */
   SmartFeeResult getEstimateSmartFee(int blocks);
-  
+
   /*
    * Adding Masternode-related RPC calls
    * 
    */
-  static interface MasternodeOutput extends Serializable
-  {
+  static interface MasternodeOutput extends Serializable {
     public String txid();
-    
+
     public int vout();
   }
-  
+
   List<MasternodeOutput> masternodeOutputs();
-  
-  static interface MasternodeInfo extends Serializable
-  {
+
+  static interface MasternodeInfo extends Serializable {
     public String address();
-    
+
     public String payee();
-    
+
     public String status();
-    
+
     public String protocol();
-    
+
     public String daemonversion();
-    
+
     public String sentinelversion();
-    
+
     public String sentinelstate();
-    
+
     public long lastseen();
-    
+
     public long activeseconds();
-    
+
     public long lastpaidtime();
-    
+
     public long lastpaidblock();
-    
+
     public String owneraddress();
-    
+
     public String votingaddress();
   }
-  
+
   Map<String, MasternodeInfo> masternodeList();
 }
-
