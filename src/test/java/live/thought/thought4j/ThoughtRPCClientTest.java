@@ -35,7 +35,6 @@ import org.junit.Test;
 
 import live.thought.thought4j.util.JSON;
 
-
 public class ThoughtRPCClientTest {
 
     class MyClientTest extends ThoughtRPCClient {
@@ -53,10 +52,10 @@ public class ThoughtRPCClientTest {
 
         @Override
         public Object query(String method, Object... o) throws GenericRpcException {
-            if(method!=expectedMethod) {
+            if (method != expectedMethod) {
                 throw new GenericRpcException("wrong method");
             }
-            if(o.equals(expectedObject)){
+            if (o.equals(expectedObject)) {
                 throw new GenericRpcException("wrong object");
             }
             return JSON.parse(result);
@@ -68,24 +67,29 @@ public class ThoughtRPCClientTest {
     @Test
     public void signRawTransactionTest() throws Exception {
         client = new MyClientTest(false, "signrawtransaction", null,
-                                    "{\n" +
-                                            "  \"hex\": \"0100000001b8b2244faca910c1ffff24ecd2b559b4699338398bf77e4cb1fdeb19ad419ea0010000006b483045022100b68b7fe9cfabb32949af6747b6769dffcf2aa4170e4df2f0e9d0a4571989e94e02204cf506c210cdb6b6b4413bf251a0b57ebcf1b1b2d303ba6183239b557ef0a310012102ab46e1d7b997d8094e97bc06a21a054c2ef485fac512e2dc91eb9831af55af4effffffff012e2600000000000017a9140b2d7ed4e5076383ba8e98b9b3bce426b7a2ea1e8700000000\",\n" +
-                                            "  \"complete\": true\n" +
-                                            "}\n");
+                "{\n" +
+                        "  \"hex\": \"0100000001b8b2244faca910c1ffff24ecd2b559b4699338398bf77e4cb1fdeb19ad419ea0010000006b483045022100b68b7fe9cfabb32949af6747b6769dffcf2aa4170e4df2f0e9d0a4571989e94e02204cf506c210cdb6b6b4413bf251a0b57ebcf1b1b2d303ba6183239b557ef0a310012102ab46e1d7b997d8094e97bc06a21a054c2ef485fac512e2dc91eb9831af55af4effffffff012e2600000000000017a9140b2d7ed4e5076383ba8e98b9b3bce426b7a2ea1e8700000000\",\n"
+                        +
+                        "  \"complete\": true\n" +
+                        "}\n");
         LinkedList<ThoughtClientInterface.ExtendedTxInput> inputList = new LinkedList<ThoughtClientInterface.ExtendedTxInput>();
         LinkedList<String> privateKeys = new LinkedList<String>();
         privateKeys.add("cSjzx3VAM1r9iLXLvL6N61oS3zKns9Z9DcocrbkEzesPTDHWm5r4");
-        String hex = client.signRawTransaction("0100000001B8B2244FACA910C1FFFF24ECD2B559B4699338398BF77E4CB1FDEB19AD419EA0010000001976A9144CB4C3B90994FEF58FABB6D8368302E917C6EFB188ACFFFFFFFF012E2600000000000017A9140B2D7ED4E5076383BA8E98B9B3BCE426B7A2EA1E8700000000",
-                                                inputList, privateKeys, "ALL");
-        assertEquals("0100000001b8b2244faca910c1ffff24ecd2b559b4699338398bf77e4cb1fdeb19ad419ea0010000006b483045022100b68b7fe9cfabb32949af6747b6769dffcf2aa4170e4df2f0e9d0a4571989e94e02204cf506c210cdb6b6b4413bf251a0b57ebcf1b1b2d303ba6183239b557ef0a310012102ab46e1d7b997d8094e97bc06a21a054c2ef485fac512e2dc91eb9831af55af4effffffff012e2600000000000017a9140b2d7ed4e5076383ba8e98b9b3bce426b7a2ea1e8700000000",
-                    hex);
+        String hex = client.signRawTransaction(
+                "0100000001B8B2244FACA910C1FFFF24ECD2B559B4699338398BF77E4CB1FDEB19AD419EA0010000001976A9144CB4C3B90994FEF58FABB6D8368302E917C6EFB188ACFFFFFFFF012E2600000000000017A9140B2D7ED4E5076383BA8E98B9B3BCE426B7A2EA1E8700000000",
+                inputList, privateKeys, "ALL");
+        assertEquals(
+                "0100000001b8b2244faca910c1ffff24ecd2b559b4699338398bf77e4cb1fdeb19ad419ea0010000006b483045022100b68b7fe9cfabb32949af6747b6769dffcf2aa4170e4df2f0e9d0a4571989e94e02204cf506c210cdb6b6b4413bf251a0b57ebcf1b1b2d303ba6183239b557ef0a310012102ab46e1d7b997d8094e97bc06a21a054c2ef485fac512e2dc91eb9831af55af4effffffff012e2600000000000017a9140b2d7ed4e5076383ba8e98b9b3bce426b7a2ea1e8700000000",
+                hex);
     }
 
+    @SuppressWarnings("deprecation")
     @Test
     public void signRawTransactionTestException() throws Exception {
         client = new MyClientTest(false, "signrawtransaction", null,
                 "{\n" +
-                        "  \"hex\": \"0100000001b8b2244faca910c1ffff24ecd2b559b4699338398bf77e4cb1fdeb19ad419ea00100000000ffffffff012e2600000000000017a9140b2d7ed4e5076383ba8e98b9b3bce426b7a2ea1e8700000000\",\n" +
+                        "  \"hex\": \"0100000001b8b2244faca910c1ffff24ecd2b559b4699338398bf77e4cb1fdeb19ad419ea00100000000ffffffff012e2600000000000017a9140b2d7ed4e5076383ba8e98b9b3bce426b7a2ea1e8700000000\",\n"
+                        +
                         "  \"complete\": false,\n" +
                         "  \"errors\": [\n" +
                         "    {\n" +
@@ -100,10 +104,10 @@ public class ThoughtRPCClientTest {
         LinkedList<ThoughtClientInterface.ExtendedTxInput> inputList = new LinkedList<ThoughtClientInterface.ExtendedTxInput>();
         LinkedList<String> privateKeys = new LinkedList<String>();
         try {
-            client.signRawTransaction("0100000001B8B2244FACA910C1FFFF24ECD2B559B4699338398BF77E4CB1FDEB19AD419EA0010000001976A9144CB4C3B90994FEF58FABB6D8368302E917C6EFB188ACFFFFFFFF012E2600000000000017A9140B2D7ED4E5076383BA8E98B9B3BCE426B7A2EA1E8700000000",
+            client.signRawTransaction(
+                    "0100000001B8B2244FACA910C1FFFF24ECD2B559B4699338398BF77E4CB1FDEB19AD419EA0010000001976A9144CB4C3B90994FEF58FABB6D8368302E917C6EFB188ACFFFFFFFF012E2600000000000017A9140B2D7ED4E5076383BA8E98B9B3BCE426B7A2EA1E8700000000",
                     inputList, privateKeys, "ALL");
-        }
-        catch(Exception e) {
+        } catch (Exception e) {
             assertThat(e.getMessage(), is("Incomplete"));
         }
     }
@@ -112,19 +116,23 @@ public class ThoughtRPCClientTest {
     public void signRawTransactionTest2() throws Exception {
         client = new MyClientTest(false, "signrawtransaction", null,
                 "{\n" +
-                        "  \"hex\": \"0100000001b8b2244faca910c1ffff24ecd2b559b4699338398bf77e4cb1fdeb19ad419ea0010000006b483045022100b68b7fe9cfabb32949af6747b6769dffcf2aa4170e4df2f0e9d0a4571989e94e02204cf506c210cdb6b6b4413bf251a0b57ebcf1b1b2d303ba6183239b557ef0a310012102ab46e1d7b997d8094e97bc06a21a054c2ef485fac512e2dc91eb9831af55af4effffffff012e2600000000000017a9140b2d7ed4e5076383ba8e98b9b3bce426b7a2ea1e8700000000\",\n" +
+                        "  \"hex\": \"0100000001b8b2244faca910c1ffff24ecd2b559b4699338398bf77e4cb1fdeb19ad419ea0010000006b483045022100b68b7fe9cfabb32949af6747b6769dffcf2aa4170e4df2f0e9d0a4571989e94e02204cf506c210cdb6b6b4413bf251a0b57ebcf1b1b2d303ba6183239b557ef0a310012102ab46e1d7b997d8094e97bc06a21a054c2ef485fac512e2dc91eb9831af55af4effffffff012e2600000000000017a9140b2d7ed4e5076383ba8e98b9b3bce426b7a2ea1e8700000000\",\n"
+                        +
                         "  \"complete\": true\n" +
                         "}\n");
-        String hex = client.signRawTransaction("0100000001B8B2244FACA910C1FFFF24ECD2B559B4699338398BF77E4CB1FDEB19AD419EA0010000001976A9144CB4C3B90994FEF58FABB6D8368302E917C6EFB188ACFFFFFFFF012E2600000000000017A9140B2D7ED4E5076383BA8E98B9B3BCE426B7A2EA1E8700000000");
-        assertEquals("0100000001b8b2244faca910c1ffff24ecd2b559b4699338398bf77e4cb1fdeb19ad419ea0010000006b483045022100b68b7fe9cfabb32949af6747b6769dffcf2aa4170e4df2f0e9d0a4571989e94e02204cf506c210cdb6b6b4413bf251a0b57ebcf1b1b2d303ba6183239b557ef0a310012102ab46e1d7b997d8094e97bc06a21a054c2ef485fac512e2dc91eb9831af55af4effffffff012e2600000000000017a9140b2d7ed4e5076383ba8e98b9b3bce426b7a2ea1e8700000000",
-                    hex);
+        String hex = client.signRawTransaction(
+                "0100000001B8B2244FACA910C1FFFF24ECD2B559B4699338398BF77E4CB1FDEB19AD419EA0010000001976A9144CB4C3B90994FEF58FABB6D8368302E917C6EFB188ACFFFFFFFF012E2600000000000017A9140B2D7ED4E5076383BA8E98B9B3BCE426B7A2EA1E8700000000");
+        assertEquals(
+                "0100000001b8b2244faca910c1ffff24ecd2b559b4699338398bf77e4cb1fdeb19ad419ea0010000006b483045022100b68b7fe9cfabb32949af6747b6769dffcf2aa4170e4df2f0e9d0a4571989e94e02204cf506c210cdb6b6b4413bf251a0b57ebcf1b1b2d303ba6183239b557ef0a310012102ab46e1d7b997d8094e97bc06a21a054c2ef485fac512e2dc91eb9831af55af4effffffff012e2600000000000017a9140b2d7ed4e5076383ba8e98b9b3bce426b7a2ea1e8700000000",
+                hex);
     }
 
     @Test
     public void lockunspentTest() throws Exception {
         client = new MyClientTest(true, "lockunspent", null,
                 "true");
-        ThoughtClientInterface.BasicTxInput basicTxInput = new ThoughtClientInterface.BasicTxInput("46dfc2f86fd72b8470456dcb1c582c7bd81b1d82fd8f5e25bba143e11ca123d9", 0);
+        ThoughtClientInterface.BasicTxInput basicTxInput = new ThoughtClientInterface.BasicTxInput(
+                "46dfc2f86fd72b8470456dcb1c582c7bd81b1d82fd8f5e25bba143e11ca123d9", 0);
         List<ThoughtClientInterface.BasicTxInput> inputSet = Collections.singletonList(basicTxInput);
         boolean bool = client.lockunspent(false, inputSet);
         assertEquals("true", String.valueOf(bool));

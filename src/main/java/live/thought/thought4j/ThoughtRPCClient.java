@@ -407,6 +407,7 @@ public class ThoughtRPCClient implements ThoughtClientInterface {
     return (String) query("getaccountaddress", account);
   }
 
+  @SuppressWarnings("unchecked")
   @Override
   public List<String> getAddressesByAccount(String account) throws GenericRpcException {
     return (List<String>) query("getaddressesbyaccount", account);
@@ -427,6 +428,7 @@ public class ThoughtRPCClient implements ThoughtClientInterface {
     return ((Number) query("getbalance", account, minConf)).doubleValue();
   }
 
+  @SuppressWarnings("unchecked")
   @Override
   public Map<String, Double> listAddressBalances(double minBalance) throws GenericRpcException {
     return (Map<String, Double>) query("listaddressbalances", minBalance);
@@ -437,6 +439,7 @@ public class ThoughtRPCClient implements ThoughtClientInterface {
   @Override
   public double getAddressBalance(Set<String> addresses) throws GenericRpcException {
     addrParam.put("addresses", addresses);
+    @SuppressWarnings("unchecked")
     Map<String, Long> retval = (Map<String, Long>) query("getaddressbalance", addrParam);
     double notions = ((Number) retval.get("balance")).doubleValue();
     return notions / 100000000;
@@ -445,6 +448,7 @@ public class ThoughtRPCClient implements ThoughtClientInterface {
   @Override
   public List<String> getAddressTxids(Set<String> addresses) throws GenericRpcException {
     addrParam.put("addresses", addresses);
+    @SuppressWarnings("unchecked")
     List<String> retval = (List<String>) query("getaddresstxids", addrParam);
     return retval;
   }
@@ -455,6 +459,7 @@ public class ThoughtRPCClient implements ThoughtClientInterface {
     params.put("addresses", addresses);
     params.put("start", start);
     params.put("end", end);
+    @SuppressWarnings("unchecked")
     List<String> retval = (List<String>) query("getaddresstxids", params);
     return retval;
   }
@@ -464,7 +469,7 @@ public class ThoughtRPCClient implements ThoughtClientInterface {
     return new SmartFeeResultMapWrapper((Map<?, ?>) query("estimatesmartfee", blocks));
   }
 
-  private class InfoWrapper extends MapWrapper implements Info, Serializable {
+  private class InfoWrapper extends MapWrapper implements Info {
     private static final long serialVersionUID = 1L;
 
     public InfoWrapper(Map<?, ?> m) {
@@ -548,7 +553,7 @@ public class ThoughtRPCClient implements ThoughtClientInterface {
 
   }
 
-  private class TxOutSetInfoWrapper extends MapWrapper implements TxOutSetInfo, Serializable {
+  private class TxOutSetInfoWrapper extends MapWrapper implements TxOutSetInfo {
     private static final long serialVersionUID = 1L;
 
     public TxOutSetInfoWrapper(Map<?, ?> m) {
@@ -591,10 +596,10 @@ public class ThoughtRPCClient implements ThoughtClientInterface {
     }
   }
 
-  private class WalletInfoWrapper extends MapWrapper implements WalletInfo, Serializable {
+  private class WalletInfoWrapper extends MapWrapper implements WalletInfo {
     private static final long serialVersionUID = 1L;
 
-    public WalletInfoWrapper(Map m) {
+    public WalletInfoWrapper(@SuppressWarnings("rawtypes") Map m) {
       super(m);
     }
 
@@ -649,7 +654,7 @@ public class ThoughtRPCClient implements ThoughtClientInterface {
     }
   }
 
-  private class NetworkInfoWrapper extends MapWrapper implements NetworkInfo, Serializable {
+  private class NetworkInfoWrapper extends MapWrapper implements NetworkInfo {
     private static final long serialVersionUID = 1L;
 
     public NetworkInfoWrapper(Map<?, ?> m) {
@@ -693,6 +698,7 @@ public class ThoughtRPCClient implements ThoughtClientInterface {
 
     @Override
     public List<Network> networks() {
+      @SuppressWarnings("unchecked")
       List<Map<?, ?>> maps = (List<Map<?, ?>>) m.get("networks");
       List<Network> networks = new LinkedList<Network>();
       for (Map<?, ?> m : maps) {
@@ -707,6 +713,7 @@ public class ThoughtRPCClient implements ThoughtClientInterface {
       return mapBigDecimal("relayfee");
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public List<String> localAddresses() {
       return (List<String>) m.get("localaddresses");
@@ -718,7 +725,7 @@ public class ThoughtRPCClient implements ThoughtClientInterface {
     }
   }
 
-  private class NetworkWrapper extends MapWrapper implements Network, Serializable {
+  private class NetworkWrapper extends MapWrapper implements Network {
     private static final long serialVersionUID = 1L;
 
     public NetworkWrapper(Map<?, ?> m) {
@@ -751,7 +758,7 @@ public class ThoughtRPCClient implements ThoughtClientInterface {
     }
   }
 
-  private class MultiSigWrapper extends MapWrapper implements MultiSig, Serializable {
+  private class MultiSigWrapper extends MapWrapper implements MultiSig {
     private static final long serialVersionUID = 1L;
 
     public MultiSigWrapper(Map<?, ?> m) {
@@ -769,7 +776,7 @@ public class ThoughtRPCClient implements ThoughtClientInterface {
     }
   }
 
-  private class NodeInfoWrapper extends MapWrapper implements NodeInfo, Serializable {
+  private class NodeInfoWrapper extends MapWrapper implements NodeInfo {
     private static final long serialVersionUID = 1L;
 
     public NodeInfoWrapper(Map<?, ?> m) {
@@ -788,6 +795,7 @@ public class ThoughtRPCClient implements ThoughtClientInterface {
 
     @Override
     public List<Address> addresses() {
+      @SuppressWarnings("unchecked")
       List<Map<?, ?>> maps = (List<Map<?, ?>>) m.get("addresses");
       List<Address> addresses = new LinkedList<Address>();
       for (Map<?, ?> m : maps) {
@@ -798,7 +806,7 @@ public class ThoughtRPCClient implements ThoughtClientInterface {
     }
   }
 
-  private class AddressWrapper extends MapWrapper implements Address, Serializable {
+  private class AddressWrapper extends MapWrapper implements Address {
     private static final long serialVersionUID = 1L;
 
     public AddressWrapper(Map<?, ?> m) {
@@ -855,7 +863,7 @@ public class ThoughtRPCClient implements ThoughtClientInterface {
 
   }
 
-  private class TransactionWrapper extends MapWrapper implements Transaction, Serializable {
+  private class TransactionWrapper extends MapWrapper implements Transaction {
     private static final long serialVersionUID = 1L;
 
     public TransactionWrapper(Map<?, ?> m) {
@@ -929,6 +937,7 @@ public class ThoughtRPCClient implements ThoughtClientInterface {
 
     @Override
     public List<Details> details() {
+      @SuppressWarnings("unchecked")
       List<Map<?, ?>> maps = (List<Map<?, ?>>) m.get("details");
       List<Details> details = new LinkedList<Details>();
       for (Map<?, ?> m : maps) {
@@ -967,7 +976,7 @@ public class ThoughtRPCClient implements ThoughtClientInterface {
     }
   }
 
-  private class TxOutWrapper extends MapWrapper implements TxOut, Serializable {
+  private class TxOutWrapper extends MapWrapper implements TxOut {
     private static final long serialVersionUID = 1L;
 
     public TxOutWrapper(Map<?, ?> m) {
@@ -1009,6 +1018,7 @@ public class ThoughtRPCClient implements ThoughtClientInterface {
       return mapStr("type");
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public List<String> addresses() {
       return (List<String>) m.get("addresses");
@@ -1025,7 +1035,7 @@ public class ThoughtRPCClient implements ThoughtClientInterface {
     }
   }
 
-  private class MiningInfoWrapper extends MapWrapper implements MiningInfo, Serializable {
+  private class MiningInfoWrapper extends MapWrapper implements MiningInfo {
     private static final long serialVersionUID = 1L;
 
     public MiningInfoWrapper(Map<?, ?> m) {
@@ -1083,7 +1093,7 @@ public class ThoughtRPCClient implements ThoughtClientInterface {
     }
   }
 
-  private class MasternodeWrapper extends MapWrapper implements Masternode, Serializable {
+  private class MasternodeWrapper extends MapWrapper implements Masternode {
     private static final long serialVersionUID = 1L;
 
     public MasternodeWrapper(Map<?, ?> m) {
@@ -1106,7 +1116,7 @@ public class ThoughtRPCClient implements ThoughtClientInterface {
     }
   }
 
-  private class BlockTemplateTransactionWrapper extends MapWrapper implements BlockTemplateTransaction, Serializable {
+  private class BlockTemplateTransactionWrapper extends MapWrapper implements BlockTemplateTransaction {
     private static final long serialVersionUID = 1L;
 
     public BlockTemplateTransactionWrapper(Map<?, ?> m) {
@@ -1123,6 +1133,7 @@ public class ThoughtRPCClient implements ThoughtClientInterface {
       return mapStr("hash");
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public List<Long> depends() {
       return (List<Long>) m.get("depends");
@@ -1144,13 +1155,14 @@ public class ThoughtRPCClient implements ThoughtClientInterface {
     }
   }
 
-  private class BlockTemplateWrapper extends MapWrapper implements BlockTemplate, Serializable {
+  private class BlockTemplateWrapper extends MapWrapper implements BlockTemplate {
     private static final long serialVersionUID = 1L;
 
     public BlockTemplateWrapper(Map<?, ?> m) {
       super(m);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public List<String> capabilities() {
       return (List<String>) m.get("capabilities");
@@ -1161,6 +1173,7 @@ public class ThoughtRPCClient implements ThoughtClientInterface {
       return mapLong("version");
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public List<String> rules() {
       return (List<String>) m.get("rules");
@@ -1178,6 +1191,7 @@ public class ThoughtRPCClient implements ThoughtClientInterface {
 
     @Override
     public List<BlockTemplateTransaction> transactions() {
+      @SuppressWarnings("unchecked")
       List<Map<?, ?>> maps = (List<Map<?, ?>>) m.get("transactions");
       List<BlockTemplateTransaction> transactions = new LinkedList<BlockTemplateTransaction>();
       for (Map<?, ?> m : maps) {
@@ -1207,6 +1221,7 @@ public class ThoughtRPCClient implements ThoughtClientInterface {
       return mapLong("mintime");
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public List<String> mutable() {
       return (List<String>) m.get("mutable");
@@ -1244,6 +1259,7 @@ public class ThoughtRPCClient implements ThoughtClientInterface {
 
     @Override
     public List<Masternode> masternode() {
+      @SuppressWarnings("unchecked")
       List<Map<?, ?>> maps = (List<Map<?, ?>>) m.get("masternode");
       List<Masternode> masternodes = new LinkedList<Masternode>();
       for (Map<?, ?> m : maps) {
@@ -1269,7 +1285,7 @@ public class ThoughtRPCClient implements ThoughtClientInterface {
     }
   }
 
-  private class BlockChainInfoMapWrapper extends MapWrapper implements BlockChainInfo, Serializable {
+  private class BlockChainInfoMapWrapper extends MapWrapper implements BlockChainInfo {
     private static final long serialVersionUID = 1L;
 
     public BlockChainInfoMapWrapper(Map<?, ?> m) {
@@ -1307,7 +1323,7 @@ public class ThoughtRPCClient implements ThoughtClientInterface {
     }
   }
 
-  private class SmartFeeResultMapWrapper extends MapWrapper implements SmartFeeResult, Serializable {
+  private class SmartFeeResultMapWrapper extends MapWrapper implements SmartFeeResult {
     private static final long serialVersionUID = 1L;
 
     public SmartFeeResultMapWrapper(Map<?, ?> m) {
@@ -1326,7 +1342,7 @@ public class ThoughtRPCClient implements ThoughtClientInterface {
 
   }
 
-  private class BlockMapWrapper extends MapWrapper implements Block, Serializable {
+  private class BlockMapWrapper extends MapWrapper implements Block {
     private static final long serialVersionUID = 1L;
 
     public BlockMapWrapper(Map<?, ?> m) {
@@ -1368,6 +1384,7 @@ public class ThoughtRPCClient implements ThoughtClientInterface {
       return mapStr("chainwork");
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public List<String> tx() {
       return (List<String>) m.get("tx");
@@ -1484,6 +1501,7 @@ public class ThoughtRPCClient implements ThoughtClientInterface {
 
   @Override
   public List<NodeInfo> getAddedNodeInfo(boolean dummy, String node) throws GenericRpcException {
+    @SuppressWarnings("unchecked")
     List<Map<?, ?>> list = ((List<Map<?, ?>>) query("getaddednodeinfo", dummy, node));
     List<NodeInfo> nodeInfoList = new LinkedList<NodeInfo>();
     for (Map<?, ?> m : list) {
@@ -1513,6 +1531,7 @@ public class ThoughtRPCClient implements ThoughtClientInterface {
     return (String) query("getnewaddress", account);
   }
 
+  @SuppressWarnings("unchecked")
   @Override
   public List<String> getRawMemPool() throws GenericRpcException {
     return (List<String>) query("getrawmempool");
@@ -1528,7 +1547,7 @@ public class ThoughtRPCClient implements ThoughtClientInterface {
     return (String) query("getrawtransaction", txId);
   }
 
-  private class RawTransactionImpl extends MapWrapper implements RawTransaction, Serializable {
+  private class RawTransactionImpl extends MapWrapper implements RawTransaction {
     private static final long serialVersionUID = 1L;
 
     public RawTransactionImpl(Map<?, ?> result) {
@@ -1570,7 +1589,7 @@ public class ThoughtRPCClient implements ThoughtClientInterface {
       return mapLong("vsize");
     }
 
-    private class InImpl extends MapWrapper implements In, Serializable {
+    private class InImpl extends MapWrapper implements In {
       private static final long serialVersionUID = 1L;
 
       public InImpl(Map<?, ?> m) {
@@ -1587,6 +1606,7 @@ public class ThoughtRPCClient implements ThoughtClientInterface {
         return mapInt("vout");
       }
 
+      @SuppressWarnings("unchecked")
       @Override
       public Map<String, Object> scriptSig() {
         return (Map<String, Object>) m.get("scriptSig");
@@ -1635,6 +1655,7 @@ public class ThoughtRPCClient implements ThoughtClientInterface {
 
     @Override
     public List<In> vIn() {
+      @SuppressWarnings("unchecked")
       final List<Map<String, Object>> vIn = (List<Map<String, Object>>) m.get("vin");
       return new AbstractList<In>() {
 
@@ -1650,7 +1671,7 @@ public class ThoughtRPCClient implements ThoughtClientInterface {
       };
     }
 
-    private class OutImpl extends MapWrapper implements Out, Serializable {
+    private class OutImpl extends MapWrapper implements Out {
       private static final long serialVersionUID = 1L;
 
       public OutImpl(Map<?, ?> m) {
@@ -1667,7 +1688,7 @@ public class ThoughtRPCClient implements ThoughtClientInterface {
         return mapInt("n");
       }
 
-      private class ScriptPubKeyImpl extends MapWrapper implements ScriptPubKey, Serializable {
+      private class ScriptPubKeyImpl extends MapWrapper implements ScriptPubKey {
         private static final long serialVersionUID = 1L;
 
         public ScriptPubKeyImpl(Map<?, ?> m) {
@@ -1694,6 +1715,7 @@ public class ThoughtRPCClient implements ThoughtClientInterface {
           return mapStr("type");
         }
 
+        @SuppressWarnings("unchecked")
         @Override
         public List<String> addresses() {
           return (List<String>) m.get("addresses");
@@ -1720,6 +1742,7 @@ public class ThoughtRPCClient implements ThoughtClientInterface {
 
     @Override
     public List<Out> vOut() {
+      @SuppressWarnings("unchecked")
       final List<Map<String, Object>> vOut = (List<Map<String, Object>>) m.get("vout");
       return new AbstractList<Out>() {
 
@@ -1757,14 +1780,14 @@ public class ThoughtRPCClient implements ThoughtClientInterface {
 
   }
 
-  private class DecodedScriptImpl extends MapWrapper implements DecodedScript, Serializable {
+  private class DecodedScriptImpl extends MapWrapper implements DecodedScript {
 
     /**
      * 
      */
     private static final long serialVersionUID = 1L;
 
-    public DecodedScriptImpl(Map m) {
+    public DecodedScriptImpl(@SuppressWarnings("rawtypes") Map m) {
       super(m);
     }
 
@@ -1788,6 +1811,7 @@ public class ThoughtRPCClient implements ThoughtClientInterface {
       return mapInt("reqSigs");
     }
 
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public List<String> addresses() {
       return (List) m.get("addresses");
@@ -1799,7 +1823,7 @@ public class ThoughtRPCClient implements ThoughtClientInterface {
     }
   }
 
-  public class NetTotalsImpl extends MapWrapper implements NetTotals, Serializable {
+  public class NetTotalsImpl extends MapWrapper implements NetTotals {
     private static final long serialVersionUID = 1L;
 
     public NetTotalsImpl(Map<?, ?> m) {
@@ -1821,7 +1845,7 @@ public class ThoughtRPCClient implements ThoughtClientInterface {
       return mapLong("timemillis");
     }
 
-    public class uploadTargetImpl extends MapWrapper implements uploadTarget, Serializable {
+    public class uploadTargetImpl extends MapWrapper implements uploadTarget {
       private static final long serialVersionUID = 1L;
 
       public uploadTargetImpl(Map<?, ?> m) {
@@ -1901,11 +1925,13 @@ public class ThoughtRPCClient implements ThoughtClientInterface {
     return null;
   }
 
+  @SuppressWarnings("unchecked")
   @Override
   public Map<String, Number> listAccounts() throws GenericRpcException {
     return (Map<String, Number>) query("listaccounts");
   }
 
+  @SuppressWarnings("unchecked")
   @Override
   public Map<String, Number> listAccounts(int minConf) throws GenericRpcException {
     return (Map<String, Number>) query("listaccounts", minConf);
@@ -1963,16 +1989,19 @@ public class ThoughtRPCClient implements ThoughtClientInterface {
     }
   }
 
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   @Override
   public List<ReceivedAddress> listReceivedByAddress() throws GenericRpcException {
     return new ReceivedAddressListWrapper((List) query("listreceivedbyaddress"));
   }
 
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   @Override
   public List<ReceivedAddress> listReceivedByAddress(int minConf) throws GenericRpcException {
     return new ReceivedAddressListWrapper((List) query("listreceivedbyaddress", minConf));
   }
 
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   @Override
   public List<ReceivedAddress> listReceivedByAddress(int minConf, boolean includeEmpty) throws GenericRpcException {
     return new ReceivedAddressListWrapper((List) query("listreceivedbyaddress", minConf, includeEmpty));
@@ -1990,7 +2019,7 @@ public class ThoughtRPCClient implements ThoughtClientInterface {
     }
   }
 
-  private class TransactionsSinceBlockImpl implements TransactionsSinceBlock, Serializable {
+  private class TransactionsSinceBlockImpl implements TransactionsSinceBlock {
 
     /**
      * 
@@ -1999,6 +2028,7 @@ public class ThoughtRPCClient implements ThoughtClientInterface {
     public final List<Transaction> transactions;
     public final String lastBlock;
 
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     public TransactionsSinceBlockImpl(Map<?, ?> r) {
       this.transactions = new TransactionListMapWrapper((List) r.get("transactions"));
       this.lastBlock = (String) r.get("lastblock");
@@ -2031,21 +2061,25 @@ public class ThoughtRPCClient implements ThoughtClientInterface {
     return new TransactionsSinceBlockImpl((Map<?, ?>) query("listsinceblock", blockHash, targetConfirmations));
   }
 
+  @SuppressWarnings("unchecked")
   @Override
   public List<Transaction> listTransactions() throws GenericRpcException {
     return new TransactionListMapWrapper((List<Map<?, ?>>) query("listtransactions"));
   }
 
+  @SuppressWarnings("unchecked")
   @Override
   public List<Transaction> listTransactions(String account) throws GenericRpcException {
     return new TransactionListMapWrapper((List<Map<?, ?>>) query("listtransactions", account));
   }
 
+  @SuppressWarnings("unchecked")
   @Override
   public List<Transaction> listTransactions(String account, int count) throws GenericRpcException {
     return new TransactionListMapWrapper((List<Map<?, ?>>) query("listtransactions", account, count));
   }
 
+  @SuppressWarnings("unchecked")
   @Override
   public List<Transaction> listTransactions(String account, int count, int skip) throws GenericRpcException {
     return new TransactionListMapWrapper((List<Map<?, ?>>) query("listtransactions", account, count, skip));
@@ -2124,21 +2158,25 @@ public class ThoughtRPCClient implements ThoughtClientInterface {
     }
   }
 
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   @Override
   public List<Unspent> listUnspent() throws GenericRpcException {
     return new UnspentListWrapper((List) query("listunspent"));
   }
 
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   @Override
   public List<Unspent> listUnspent(int minConf) throws GenericRpcException {
     return new UnspentListWrapper((List) query("listunspent", minConf));
   }
 
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   @Override
   public List<Unspent> listUnspent(int minConf, int maxConf) throws GenericRpcException {
     return new UnspentListWrapper((List) query("listunspent", minConf, maxConf));
   }
 
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   @Override
   public List<Unspent> listUnspent(int minConf, int maxConf, String... addresses) throws GenericRpcException {
     return new UnspentListWrapper((List) query("listunspent", minConf, maxConf, addresses));
@@ -2331,16 +2369,19 @@ public class ThoughtRPCClient implements ThoughtClientInterface {
     query("setgenerate", b);
   }
 
+  @SuppressWarnings("unchecked")
   @Override
   public List<String> generate(int numBlocks) throws ThoughtRPCException {
     return (List<String>) query("generate", numBlocks);
   }
 
+  @SuppressWarnings("unchecked")
   @Override
   public List<String> generate(int numBlocks, long maxTries) throws ThoughtRPCException {
     return (List<String>) query("generate", numBlocks, maxTries);
   }
 
+  @SuppressWarnings("unchecked")
   @Override
   public List<String> generateToAddress(int numBlocks, String address) throws ThoughtRPCException {
     return (List<String>) query("generatetoaddress", numBlocks, address);
@@ -2367,7 +2408,7 @@ public class ThoughtRPCClient implements ThoughtClientInterface {
 
   }
 
-  private class PeerInfoWrapper extends MapWrapper implements PeerInfoResult, Serializable {
+  private class PeerInfoWrapper extends MapWrapper implements PeerInfoResult {
     private static final long serialVersionUID = 1L;
 
     public PeerInfoWrapper(Map<?, ?> m) {
@@ -2473,6 +2514,7 @@ public class ThoughtRPCClient implements ThoughtClientInterface {
 
   @Override
   public List<PeerInfoResult> getPeerInfo() throws GenericRpcException {
+    @SuppressWarnings("unchecked")
     final List<Map<?, ?>> l = (List<Map<?, ?>>) query("getpeerinfo");
     // final List<PeerInfoResult> res = new ArrayList<>(l.size());
     // for (Map m : l)
@@ -2648,16 +2690,19 @@ public class ThoughtRPCClient implements ThoughtClientInterface {
     return (String) query("submitblock", hexData);
   }
 
+  @SuppressWarnings("rawtypes")
   @Override
   public Transaction getTransaction(String txId) {
     return new TransactionWrapper((Map) query("gettransaction", txId));
   }
 
+  @SuppressWarnings("rawtypes")
   @Override
   public TxOut getTxOut(String txId, long vout) throws GenericRpcException {
     return new TxOutWrapper((Map) query("gettxout", txId, vout, true));
   }
 
+  @SuppressWarnings("rawtypes")
   public TxOut getTxOut(String txId, long vout, boolean includemempool) throws GenericRpcException {
     return new TxOutWrapper((Map) query("gettxout", txId, vout, includemempool));
   }
@@ -2683,7 +2728,9 @@ public class ThoughtRPCClient implements ThoughtClientInterface {
 
   public List<MasternodeOutput> masternodeOutputs() {
     List<MasternodeOutput> retval = new ArrayList<MasternodeOutput>();
+    @SuppressWarnings("rawtypes")
     Map results = (Map) query("masternode", "status");
+    @SuppressWarnings("unchecked")
     Set<String> keys = results.keySet();
     for (String key : keys) {
       MasternodeOutputImpl moi = new MasternodeOutputImpl();
@@ -2696,9 +2743,10 @@ public class ThoughtRPCClient implements ThoughtClientInterface {
   }
 
   private class MasternodeInfoImpl implements MasternodeInfo {
+    @SuppressWarnings("rawtypes")
     Map map;
 
-    public MasternodeInfoImpl(Map map) {
+    public MasternodeInfoImpl(@SuppressWarnings("rawtypes") Map map) {
       this.map = map;
     }
 
@@ -2773,6 +2821,7 @@ public class ThoughtRPCClient implements ThoughtClientInterface {
 
   }
 
+  @SuppressWarnings("rawtypes")
   @Override
   public Map<String, MasternodeInfo> masternodeList() {
     Map<String, MasternodeInfo> retval = new LinkedHashMap<String, MasternodeInfo>();

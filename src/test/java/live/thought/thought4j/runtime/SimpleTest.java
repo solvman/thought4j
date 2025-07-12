@@ -36,11 +36,8 @@ public class SimpleTest {
     // System.out.println(b.sendToAddress(ab, 0.1, "comment", "tocomment"));
     // System.out.println(b.getReceivedByAddress(ab));
     // System.out.println(b.sendToAddress(ac, 0.01));
-
     // System.out.println(b.validateAddress(ac));
-
     // b.importPrivKey(b.dumpPrivKey(aa));
-
     // System.out.println(b.getAddressesByAccount("TEST"));
     ThoughtClientInterface.BasicTxInput basicTxInput = new ThoughtClientInterface.BasicTxInput(
         "d511fbbfa09e5ddbbd4cdd0d79aa2135b52415c8986d84729cb3874c62776423", 1);

@@ -32,28 +32,30 @@ import java.util.Map;
  * @author Mikhail Yevchenko m.ṥῥẚɱ.ѓѐḿởύḙ@azazar.com
  */
 public class JSON {
-    
+
+    @SuppressWarnings("rawtypes")
     public static String stringify(Object o) {
         if (o == null)
             return "null";
         if ((o instanceof Number) || (o instanceof Boolean))
             return String.valueOf(o);
         if (o instanceof Date)
-            return "new Date("+((Date)o).getTime()+")";
+            return "new Date(" + ((Date) o).getTime() + ")";
         if (o instanceof Map)
-            return stringify((Map)o);
+            return stringify((Map) o);
         if (o instanceof Iterable)
-            return stringify((Iterable<?>)o);
+            return stringify((Iterable<?>) o);
         if (o instanceof Object[])
-            return stringify((Object[])o);
+            return stringify((Object[]) o);
         return stringify(String.valueOf(o));
     }
-    
-    public static String stringify(Map m) {
+
+    @SuppressWarnings("unchecked")
+    public static String stringify(@SuppressWarnings("rawtypes") Map m) {
         StringBuilder b = new StringBuilder();
         b.append('{');
         boolean first = true;
-        for (Map.Entry<Object, Object> e : ((Map<Object, Object>)m).entrySet()) {
+        for (Map.Entry<Object, Object> e : ((Map<Object, Object>) m).entrySet()) {
             if (first)
                 first = false;
             else
@@ -61,12 +63,12 @@ public class JSON {
             b.append(stringify(e.getKey()));
             b.append(':');
             b.append(stringify(e.getValue()));
-            
+
         }
         b.append('}');
         return b.toString();
     }
-    
+
     public static String stringify(Iterable<?> c) {
         StringBuilder b = new StringBuilder();
         b.append('[');
@@ -81,7 +83,7 @@ public class JSON {
         b.append(']');
         return b.toString();
     }
-    
+
     public static String stringify(Object[] c) {
         StringBuilder b = new StringBuilder();
         b.append('[');
@@ -96,11 +98,11 @@ public class JSON {
         b.append(']');
         return b.toString();
     }
-    
+
     public static String stringify(String s) {
         StringBuilder b = new StringBuilder(s.length() + 2);
         b.append('"');
-        for(int idx = 0; idx < s.length(); idx++) {
+        for (int idx = 0; idx < s.length(); idx++) {
             char c = s.charAt(idx);
             switch (c) {
                 case '\t':
@@ -130,16 +132,17 @@ public class JSON {
         b.append('"');
         return b.toString();
     }
-    
+
     public static Object parse(String s) {
         return CrippledJavaScriptParser.parseJSExpr(s);
     }
 
-//    public static void main(String[] args) {
-//        String test =
-//                  "[ { 'x': 'y', 'y': 'z', id: 'value' }, { 1:2 }, {3:2, 4:[null,1,2,3,null,-1,111,-111,null]} ];";
-//        System.out.println(stringify(parse(test)));
-//        System.out.println(stringify(new Object[] {1,2,3,"asd"}));
-//    }
+    // public static void main(String[] args) {
+    // String test =
+    // "[ { 'x': 'y', 'y': 'z', id: 'value' }, { 1:2 }, {3:2,
+    // 4:[null,1,2,3,null,-1,111,-111,null]} ];";
+    // System.out.println(stringify(parse(test)));
+    // System.out.println(stringify(new Object[] {1,2,3,"asd"}));
+    // }
 
 }
