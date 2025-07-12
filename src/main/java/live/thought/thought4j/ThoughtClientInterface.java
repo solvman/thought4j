@@ -898,7 +898,6 @@ public interface ThoughtClientInterface {
    * @see <a href=
    *      "https://bitcoin.org/en/developer-reference#getblock">getblock</a>
    * 
-   *      [TODO] Is this really public API?
    */
   String getRawBlock(String blockHash) throws GenericRpcException;
 
@@ -1015,7 +1014,7 @@ public interface ThoughtClientInterface {
      *
      * @return the list of inputs
      */
-    List<In> vIn(); // TODO : Create special interface instead of this
+    List<In> vIn();
 
     interface Out extends Serializable {
 
@@ -1046,7 +1045,7 @@ public interface ThoughtClientInterface {
     /**
      * This method should be replaced someday
      */
-    List<Out> vOut(); // TODO : Create special interface instead of this
+    List<Out> vOut();
 
     String blockHash();
 
@@ -1191,7 +1190,6 @@ public interface ThoughtClientInterface {
    * @see <a href=
    *      "https://bitcoin.org/en/developer-reference#importaddress">importaddress</a>
    * 
-   *      [TODO] Should this really return Object?
    */
   Object importAddress(String address, String account, boolean rescan) throws GenericRpcException;
 
@@ -1936,7 +1934,6 @@ public interface ThoughtClientInterface {
    * @param blockHash
    *                  the hash of the block to mark as invalid
    * 
-   *                  [TODO] Add to https://bitcoin.org/en/developer-reference
    */
   void invalidateBlock(String blockHash) throws GenericRpcException;
 
@@ -1947,7 +1944,6 @@ public interface ThoughtClientInterface {
    * @param blockHash
    *                  The hash of the block to reconsider
    * 
-   *                  [TODO] Add to https://bitcoin.org/en/developer-reference
    */
   void reconsiderBlock(String blockHash) throws GenericRpcException;
 
@@ -2104,7 +2100,6 @@ public interface ThoughtClientInterface {
    * @see <a href=
    *      "https://bitcoin.org/en/developer-reference#getgenerate">getgenerate</a>
    * 
-   *      [TODO] Add parameters blocks, height
    */
   double getNetworkHashPs();
 
@@ -2305,7 +2300,6 @@ public interface ThoughtClientInterface {
    * @see <a href=
    *      "https://bitcoin.org/en/developer-reference#verifychain">verifychain</a>
    * 
-   *      [TODO] Add parameters checkLevel, numOfBlocks
    */
   boolean verifyChain();
 
@@ -2387,7 +2381,6 @@ public interface ThoughtClientInterface {
    *               Confirmation target in blocks
    * @return estimate fee rate in BTC/kB
    * 
-   *         [TODO] Add to https://bitcoin.org/en/developer-reference
    */
   SmartFeeResult getEstimateSmartFee(int blocks);
 
