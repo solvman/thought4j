@@ -68,6 +68,7 @@ import live.thought.thought4j.util.MapWrapper;
  * @author Mikhail Yevchenko m.ṥῥẚɱ.ѓѐḿởύḙ at azazar.com Small modifications by
  *         Alessandro Polverini polverini at gmail.com
  */
+@SuppressWarnings("deprecation")
 public class ThoughtRPCClient implements ThoughtClientInterface {
 
   private static final Logger logger = Logger.getLogger(ThoughtRPCClient.class.getCanonicalName());
